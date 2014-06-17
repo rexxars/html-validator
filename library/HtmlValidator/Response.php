@@ -100,8 +100,6 @@ class Response {
                 $this->errors[] = $msg;
             } else if ($message['type'] === 'warning') {
                 $this->warnings[] = $msg;
-            } else {
-                echo 'UNKNOWN MESSAGE TYPE: "' . $message['type'] . '"' . PHP_EOL;exit;
             }
         }
     }
@@ -155,7 +153,7 @@ class Response {
             $msgs[] = $msg->format($useHTML);
         }
 
-        return implode(PHP_EOL, $msgs);
+        return implode(PHP_EOL . PHP_EOL, $msgs);
     }
 
     /**
