@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true"
+  bootstrap="tests/bootstrap.php">
+  <testsuites>
+    <testsuite name="html-validator test suite">
+      <directory>tests/HtmlValidator</directory>
+    </testsuite>
+  </testsuites>
+
+  <php>
+    <const name="HTML_VALIDATOR_ENABLE_REQUEST_TESTS" value="true" />
+    <const name="HTML_VALIDATOR_REQUEST_TESTS_URL" value="http://localhost:9977" />
+  </php>
+</phpunit>
