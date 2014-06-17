@@ -130,7 +130,7 @@ class Message {
      * @return int
      */
     public function getFirstLine() {
-        return $this->lastLine;
+        return $this->firstLine;
     }
 
     /**
@@ -183,7 +183,7 @@ class Message {
      * 
      * @return int
      */
-    public function getHilightStart() {
+    public function getHighlightStart() {
         return $this->hiliteStart;
     }
 
@@ -278,7 +278,8 @@ class Message {
 
         // Check if the user has specified a custom highlighter
         if ($this->highlighter) {
-            $extract = $this->highlighter($this->extract, $this->hiliteStart, $this->hiliteLength);
+            $highlighter = $this->highlighter;
+            $extract = $highlighter($this->extract, $this->hiliteStart, $this->hiliteLength);
         } else {
             $extract = $this->highlight($this->extract, $this->hiliteStart, $this->hiliteLength);
         }
