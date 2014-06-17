@@ -265,7 +265,7 @@ class Message {
         $message = sprintf(
             $format,
             $html ? '<strong>' . $this->type . '</strong>' : $this->type,
-            $html ? htmlentities($this->text) : $this->text,
+            $html ? htmlentities($this->text, ENT_COMPAT, 'UTF-8') : $this->text,
             $this->firstLine,
             $this->firstColumn,
             $this->lastLine,
