@@ -43,6 +43,7 @@ class Validator {
      * @var string
      */
     const CHARSET_UTF8 = 'utf-8';
+    const CHARSET_ISO_8859_1 = 'iso-8859-1';
 
     /**
      * Default validator URL
@@ -92,6 +93,27 @@ class Validator {
     }
 
     /**
+     * Set the HTTP client to use for requests
+     * 
+     * @param Guzzle\Http\ClientInterface $httpClient
+     * @return HttpValidator\Validator
+     */
+    public function setHttpClient($httpClient) {
+        $this->httpClient = $httpClient;
+
+        return $this;
+    }
+
+    /**
+     * Get the set parser type
+     * 
+     * @return string
+     */
+    public function getParser() {
+        return $this->parser;
+    }
+
+    /**
      * Set parser to use for the given markup
      * 
      * @param string $parser Parser name (use Validator::PARSER_*)
@@ -114,11 +136,21 @@ class Validator {
     }
 
     /**
-     * Set the default charset to report to the validator
+     * Get the charset to report to the validator
+     * 
+     * @return string
+     */
+    public function getCharset() {
+        return $this->defaultCharset;
+    }
+
+    /**
+     * Set the charset to report to the validator
      * 
      * @param string $charset Charset name (defaults to 'utf-8')
+     * @return HtmlValidator\Validator
      */
-    public function setDefaultCharset($charset) {
+    public function setCharset($charset) {
         $this->defaultCharset = $charset;
 
         return $this;
@@ -171,7 +203,6 @@ class Validator {
                 $this->getMimeTypeForParser($this->parser),
                 $charset
             ),
-            'Content-Length' => strlen($document),
         );
 
         $request = $this->httpClient->post('', $headers, $document, array(
