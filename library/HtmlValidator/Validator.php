@@ -89,7 +89,6 @@ class Validator {
         $this->nodeWrapper = new NodeWrapper();
 
         $this->setParser($parser);
-        $this->setDefaultCharset(self::CHARSET_UTF8);
     }
 
     /**
