@@ -14,7 +14,7 @@
         "guzzle/guzzle": "~3.9.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "~4.1.0"
     },
     "support": {
         "issues": "https://github.com/rexxars/html-validator/issues"
