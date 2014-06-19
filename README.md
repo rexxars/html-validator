@@ -39,7 +39,7 @@ To include `html-validator` in your project, add it to your `composer.json` file
 
 Document to be validated (`validate-me.html`):
 ``` html
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
     <title>Invalid HTML4!</title>
@@ -48,7 +48,7 @@ Document to be validated (`validate-me.html`):
     <p>This document is not a proper, well-formed HTML4 document!</p>
     <p>It contains fatal flaws, like:</p>
     <ul>
-        <li><li tags which are not closed</li>
+        <li><div> tags which are not closed</li>
         <li>span-tags which are never opened are attempted closed </span></li>
     </ul>
 </body>
@@ -84,6 +84,17 @@ From line 10, column 13; to line 10, column 17
 error: Stray end tag “span”.
 From line 11, column 67; to line 11, column 73
 ed closed </span></li>
+
+```
+
+# Using a self-hosted version of the API
+
+Check out [validator.nu](http://about.validator.nu/#src) for instructions on setting up the service.
+Once set up, you can configure the validator to use a different host:
+
+``` php
+<?php
+$validator = new HtmlValidator\Validator('http://self-hosted-validator.domain.com');
 
 ```
 
