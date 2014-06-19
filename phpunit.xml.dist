@@ -4,6 +4,7 @@
   <testsuites>
     <testsuite name="html-validator test suite">
       <directory>tests/UnitTests</directory>
+      <directory>tests/IntegrationTests</directory>
     </testsuite>
   </testsuites>
 
@@ -16,8 +17,8 @@
   </logging>
 
   <php>
-    <const name="HTML_VALIDATOR_ENABLE_REQUEST_TESTS" value="false" />
-    <const name="HTML_VALIDATOR_REQUEST_TESTS_URL" value="" />
+    <const name="HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS" value="false" />
+    <const name="HTML_VALIDATOR_URL" value="http://validator.nu" />
   </php>
 
   <filter>

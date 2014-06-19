@@ -14,7 +14,7 @@ namespace HtmlValidator;
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
 
-defined('HTTPD_SERVER_PATH') || define('HTTPD_SERVER_PATH', __DIR__ . '/validator-server-mock.php');
+define('FIXTURES_DIR', __DIR__ . '/fixtures');
 
 $autoloader = require __DIR__ . '/../vendor/autoload.php';
 $autoloader->add(__NAMESPACE__, __DIR__);
