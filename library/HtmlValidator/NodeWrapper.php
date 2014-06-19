@@ -23,7 +23,7 @@ class NodeWrapper {
 
     /**
      * Attempts to wrap a document in a surrounding document
-     * 
+     *
      * @param  string $parser  Parser name (HtmlValidator\Validator::PARSER_*)
      * @param  string $nodes   Nodes to wrap
      * @param  string $charset Charset to use
@@ -48,7 +48,7 @@ class NodeWrapper {
 
     /**
      * Wraps a set of XML nodes in an XML-document
-     * 
+     *
      * @param  string $nodes   One or more XML-nodes, as a string
      * @param  string $charset Charset to specify in XML-document
      * @return string
@@ -64,7 +64,7 @@ class NodeWrapper {
 
     /**
      * Wraps a set of HTML nodes in an HTML5-document
-     * 
+     *
      * @param  string $nodes   One or more HTML-nodes, as a string
      * @param  string $charset Charset to specify in meta tag
      * @return string
@@ -83,7 +83,7 @@ class NodeWrapper {
 
     /**
      * Wraps a set of HTML nodes in an HTML4-document
-     * 
+     *
      * @param  string $nodes   One or more HTML-nodes, as a string
      * @param  string $charset Charset to specify in meta tag
      * @param  string $parser  Validator parser used
@@ -93,7 +93,7 @@ class NodeWrapper {
         if ($parser === Validator::PARSER_HTML4TR) {
             $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
         } else {
-            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">';
+            $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
         }
 
         $charset = strtolower($charset ?: Validator::CHARSET_UTF_8);
