@@ -22,70 +22,70 @@ class Message {
 
     /**
      * Type of error
-     * 
+     *
      * @var string
      */
     private $type;
 
     /**
      * Line number of where the error first occured
-     * 
+     *
      * @var int
      */
     private $firstLine;
 
     /**
      * Line number of where the error last occured
-     * 
+     *
      * @var int
      */
     private $lastLine;
 
     /**
      * First column index of where the error occured
-     * 
+     *
      * @var int
      */
     private $firstColumn;
 
     /**
      * Last column index of where the error occured
-     * 
+     *
      * @var int
      */
     private $lastColumn;
 
     /**
      * String offset within extract where the highlight should be started
-     * 
+     *
      * @var int
      */
     private $hiliteStart;
 
     /**
      * Length of highlighted string, within extract
-     * 
+     *
      * @var int
      */
     private $hiliteLength;
 
     /**
      * Text describing the error
-     * 
+     *
      * @var string
      */
     private $text;
 
     /**
      * An extract of an area where the error occured
-     * 
+     *
      * @var string
      */
     private $extract;
 
     /**
      * Callable highlighter function, overridable by user
-     * 
+     *
      * @var callable
      */
     private $highlighter;
@@ -93,7 +93,7 @@ class Message {
     /**
      * CSS class name to use for the highlighted substring
      * (Only used if no custom highlighter is set)
-     * 
+     *
      * @var string
      */
     private $highlightClassName = 'highlight';
@@ -115,7 +115,7 @@ class Message {
 
     /**
      * Constructs a new message object
-     * 
+     *
      * @param array $info
      */
     public function __construct(array $info) {
@@ -134,7 +134,7 @@ class Message {
 
     /**
      * Get the message type for this message
-     * 
+     *
      * @return string
      */
     public function getType() {
@@ -143,7 +143,7 @@ class Message {
 
     /**
      * Get line number of first line where the error occured
-     * 
+     *
      * @return int
      */
     public function getFirstLine() {
@@ -152,7 +152,7 @@ class Message {
 
     /**
      * Get line number of last line where the error occured
-     * 
+     *
      * @return int
      */
     public function getLastLine() {
@@ -161,7 +161,7 @@ class Message {
 
     /**
      * Get start column where the error occured
-     * 
+     *
      * @return int
      */
     public function getFirstColumn() {
@@ -170,7 +170,7 @@ class Message {
 
     /**
      * Get last column where the error occured
-     * 
+     *
      * @return int
      */
     public function getLastColumn() {
@@ -179,7 +179,7 @@ class Message {
 
     /**
      * Get a text description of the message
-     * 
+     *
      * @return string
      */
     public function getText() {
@@ -188,7 +188,7 @@ class Message {
 
     /**
      * Get an extract of the problematic area
-     * 
+     *
      * @return string
      */
     public function getExtract() {
@@ -197,7 +197,7 @@ class Message {
 
     /**
      * Get index offset of substring to highlight (within extract)
-     * 
+     *
      * @return int
      */
     public function getHighlightStart() {
@@ -206,7 +206,7 @@ class Message {
 
     /**
      * Get length of the substring to highlight
-     * 
+     *
      * @return int
      */
     public function getHighlightLength() {
@@ -219,7 +219,7 @@ class Message {
      *  (string) $string - The full string in which to find the substring
      *  (int)    $start  - Start index of the substring to highlight
      *  (int)    $length - Length of substring to highlight
-     * 
+     *
      * @param callable $highlighter
      * @return HtmlValidator\Message
      */
@@ -235,7 +235,7 @@ class Message {
     /**
      * Set the class name to use for the highlighted span.
      * Default: "highlight"
-     * 
+     *
      * @param  string $className Valid CSS class name
      * @return HtmlValidator\Message
      */
@@ -247,7 +247,7 @@ class Message {
 
     /**
      * Highlight the given string, enclosing it in a span
-     * 
+     *
      * @param  string $str    String to highlight
      * @param  int    $start  Start index of substring to highlight
      * @param  int    $length Length of substring to highlight
@@ -261,7 +261,7 @@ class Message {
         );
 
         $parts = array_map('htmlentities', $parts);
-        
+
         $highlighted  = $parts[0] . '<span class="' . $this->highlightClassName . '">';
         $highlighted .= $parts[1] . '</span>' . $parts[2];
 
@@ -270,14 +270,18 @@ class Message {
 
     /**
      * Format the message in readable format
-     * 
+     *
      * @param  boolean $html Whether to return an HTML-representation or not
      * @return string
      */
     public function format($html = false) {
-        $format  = '%s: %s' . PHP_EOL;
-        $format .= 'From line %d, column %d; ' ;
-        $format .= 'to line %d, column %d';
+        $format  = '%s: %s';
+
+        if ($this->lastLine > 0) {
+            $format .= PHP_EOL;
+            $format .= 'From line %d, column %d; ' ;
+            $format .= 'to line %d, column %d';
+        }
 
         $message = sprintf(
             $format,
@@ -307,7 +311,7 @@ class Message {
 
     /**
      * Transforms message to a human-readable HTML string
-     * 
+     *
      * @return string
      */
     public function toHTML() {
@@ -316,7 +320,7 @@ class Message {
 
     /**
      * Transforms message to a human-readable string
-     * 
+     *
      * @return string
      */
     public function __toString() {
