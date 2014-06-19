@@ -42,8 +42,39 @@ class Validator {
      *
      * @var string
      */
-    const CHARSET_UTF8 = 'utf-8';
-    const CHARSET_ISO_8859_1 = 'iso-8859-1';
+    const CHARSET_UTF_8 = 'UTF-8';
+    const CHARSET_UTF_16 = 'UTF-16';
+    const CHARSET_WINDOWS_1250 = 'Windows-1250';
+    const CHARSET_WINDOWS_1251 = 'Windows-1251';
+    const CHARSET_WINDOWS_1252 = 'Windows-1252';
+    const CHARSET_WINDOWS_1253 = 'Windows-1253';
+    const CHARSET_WINDOWS_1254 = 'Windows-1254';
+    const CHARSET_WINDOWS_1255 = 'Windows-1255';
+    const CHARSET_WINDOWS_1256 = 'Windows-1256';
+    const CHARSET_WINDOWS_1257 = 'Windows-1257';
+    const CHARSET_WINDOWS_1258 = 'Windows-1258';
+    const CHARSET_ISO_8859_1 = 'ISO-8859-1';
+    const CHARSET_ISO_8859_2 = 'ISO-8859-2';
+    const CHARSET_ISO_8859_3 = 'ISO-8859-3';
+    const CHARSET_ISO_8859_4 = 'ISO-8859-4';
+    const CHARSET_ISO_8859_5 = 'ISO-8859-5';
+    const CHARSET_ISO_8859_6 = 'ISO-8859-6';
+    const CHARSET_ISO_8859_7 = 'ISO-8859-7';
+    const CHARSET_ISO_8859_8 = 'ISO-8859-8';
+    const CHARSET_ISO_8859_9 = 'ISO-8859-9';
+    const CHARSET_ISO_8859_13 = 'ISO-8859-13';
+    const CHARSET_ISO_8859_15 = 'ISO-8859-15';
+    const CHARSET_KOI8_R = 'KOI8-R';
+    const CHARSET_TIS_620 = 'TIS-620';
+    const CHARSET_GBK = 'GBK';
+    const CHARSET_GB18030 = 'GB18030';
+    const CHARSET_BIG5 = 'Big5';
+    const CHARSET_BIG5_HKSCS = 'Big5-HKSCS';
+    const CHARSET_SHIFT_JIS = 'Shift_JIS';
+    const CHARSET_ISO_2022_JP = 'ISO-2022-JP';
+    const CHARSET_EUC_JP = 'EUC-JP';
+    const CHARSET_ISO_2022_KR = 'ISO-2022-KR';
+    const CHARSET_EUC_KR = 'EUC-KR' ;
 
     /**
      * Default validator URL
@@ -71,7 +102,7 @@ class Validator {
      * 
      * @var string
      */
-    private $defaultCharset = self::CHARSET_UTF8;
+    private $defaultCharset = self::CHARSET_UTF_8;
 
     /**
      * Node wrapper tool
@@ -185,7 +216,7 @@ class Validator {
      * @return string
      */
     private function getContentTypeString($mimeType, $charset) {
-        return $mimeType . '; charset=' . $charset;
+        return $mimeType . '; charset=' . strtolower($charset);
     }
 
     /**

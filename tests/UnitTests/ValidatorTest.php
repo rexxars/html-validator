@@ -58,7 +58,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $client = new Validator();
 
         // Ensure default is UTF-8
-        $this->assertSame(Validator::CHARSET_UTF8, $client->getCharset());
+        $this->assertSame(Validator::CHARSET_UTF_8, $client->getCharset());
 
         // Ensure we can set a different charset (and that the setter returns the client)
         $this->assertSame($client, $client->setCharset(Validator::CHARSET_ISO_8859_1));
@@ -103,7 +103,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
             )
             ->will($this->returnValue($requestMock));
         
-        $client->setCharset(Validator::CHARSET_UTF8);
+        $client->setCharset(Validator::CHARSET_UTF_8);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
     }

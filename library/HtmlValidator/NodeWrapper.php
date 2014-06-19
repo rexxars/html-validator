@@ -54,7 +54,7 @@ class NodeWrapper {
      * @return string
      */
     protected function wrapInXmlDocument($nodes, $charset = null) {
-        $charset = strtoupper($charset ?: Validator::CHARSET_UTF8);
+        $charset = strtoupper($charset ?: Validator::CHARSET_UTF_8);
 
         $document  = '<?xml version="1.0" encoding="' . $charset . '"?>' . PHP_EOL;
         $document .= '<root>' . $nodes . '</root>';
@@ -70,7 +70,7 @@ class NodeWrapper {
      * @return string
      */
     protected function wrapInHtml5Document($nodes, $charset = null) {
-        $charset = strtolower($charset ?: Validator::CHARSET_UTF8);
+        $charset = strtolower($charset ?: Validator::CHARSET_UTF_8);
 
         $document  = '<!DOCTYPE html>' . PHP_EOL;
         $document .= '<html><head>' . PHP_EOL;
@@ -96,7 +96,7 @@ class NodeWrapper {
             $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">';
         }
 
-        $charset = strtolower($charset ?: Validator::CHARSET_UTF8);
+        $charset = strtolower($charset ?: Validator::CHARSET_UTF_8);
 
         $document  = $doctype . PHP_EOL;
         $document .= '<html><head>' . PHP_EOL;
