@@ -99,11 +99,28 @@ class Message {
     private $highlightClassName = 'highlight';
 
     /**
+     * Default message values
+     *
+     * @var array
+     */
+    private $defaults = array(
+        'lastLine'     => 0,
+        'firstColumn'  => 0,
+        'lastColumn'   => 0,
+        'hiliteStart'  => 0,
+        'hiliteLength' => 0,
+        'message'      => '',
+        'extract'      => '',
+    );
+
+    /**
      * Constructs a new message object
      * 
      * @param array $info
      */
     public function __construct(array $info) {
+        $info = array_merge($this->defaults, $info);
+
         $this->type = $info['type'];
         $this->firstLine = isset($info['firstLine']) ? $info['firstLine'] : $info['lastLine'];
         $this->lastLine = $info['lastLine'];
