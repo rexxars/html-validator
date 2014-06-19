@@ -45,7 +45,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the XML wrapper can wrap a single XML node correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
      */
@@ -57,7 +57,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
         $document = new DOMDocument();
         $document->loadXML($wrapped);
-        
+
         // "<root>"-tag should automatically inserted
         $this->assertEquals('root', $document->firstChild->nodeName);
 
@@ -71,7 +71,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the XML wrapper can wrap multiple XML nodes correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
      */
@@ -83,7 +83,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
         $document = new DOMDocument();
         $document->loadXML($wrapped);
-        
+
         // "<root>"-tag should automatically inserted
         $this->assertEquals('root', $document->firstChild->nodeName);
 
@@ -100,7 +100,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the XML wrapper uses the passed charset
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
      */
@@ -111,7 +111,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             '<item>Moo</item>',
             'iso-8859-1'
         ));
-        
+
         $this->assertEquals('ISO-8859-1', $document->encoding);
     }
 
@@ -123,7 +123,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML5 wrapper can wrap a single HTML5 node correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
      */
@@ -132,7 +132,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML5,
             '<p>Moo</p>'
         );
-        
+
         // Document should start with doctype html
         $this->assertSame(0, strpos($wrapped, '<!DOCTYPE html>'));
 
@@ -155,7 +155,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML5 wrapper can wrap multiple HTML5 nodes correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
      */
@@ -164,7 +164,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML5,
             '<p>Foo</p><p>Bar</p>'
         );
-        
+
         // Document should start with doctype html
         $this->assertSame(0, strpos($wrapped, '<!DOCTYPE html>'));
 
@@ -190,7 +190,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML5 wrapper uses the passed charset
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
      */
@@ -204,7 +204,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Expecting: <meta charset="iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]*charset=[\'"](.*?)[\'"]/i', $wrapped, $groups));
         $this->assertSame(2, count($groups));
-        
+
         $this->assertEquals('iso-8859-1', $groups[1]);
     }
 
@@ -213,10 +213,10 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      * ========================== [ HTML4 ] ===========================
      * ================================================================
      */
-    
+
     /**
      * Ensure the HTML4 wrapper can wrap a single HTML4 node correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -225,10 +225,10 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML4,
             '<p>Moo</p>'
         );
-        
+
         // Document should start with HTML4 doctype
-        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">';
-        $this->assertSame(0, strpos($wrapped, $doctype));
+        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+        $this->assertSame(0, strpos($wrapped, $doctype), 'Document did not start with HTML4 doctype');
 
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
@@ -249,7 +249,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML4 wrapper can wrap multiple HTML4 nodes correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -258,10 +258,10 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML4,
             '<p>Foo</p><p>Bar</p>'
         );
-        
+
         // Document should start with the HTML4 doctype
-        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">';
-        $this->assertSame(0, strpos($wrapped, $doctype));
+        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+        $this->assertSame(0, strpos($wrapped, $doctype), 'Document did not start with HTML4 doctype');
 
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
@@ -285,7 +285,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML4 wrapper uses the passed charset
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -299,10 +299,10 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Expecting: <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]+charset=(.*?)[\'"]>/i', $wrapped, $groups));
         $this->assertSame(2, count($groups));
-        
+
         $this->assertEquals('iso-8859-1', $groups[1]);
     }
-    
+
 
     /**
      * ================================================================
@@ -312,7 +312,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML4-TR wrapper can wrap a single HTML4 node correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -321,7 +321,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML4TR,
             '<p>Moo</p>'
         );
-        
+
         // Document should start with HTML4 transitional doctype
         $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
         $this->assertSame(0, strpos($wrapped, $doctype));
@@ -345,7 +345,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML4-TR wrapper can wrap multiple HTML4 nodes correctly
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -354,7 +354,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
             Validator::PARSER_HTML4TR,
             '<p>Foo</p><p>Bar</p>'
         );
-        
+
         // Document should start with the HTML4 transitional doctype
         $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
         $this->assertSame(0, strpos($wrapped, $doctype));
@@ -381,7 +381,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure the HTML4-TR wrapper uses the passed charset
-     * 
+     *
      * @covers HtmlValidator\NodeWrapper::wrap
      * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
      */
@@ -395,7 +395,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Expecting: <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]+charset=(.*?)[\'"]>/i', $wrapped, $groups));
         $this->assertSame(2, count($groups));
-        
+
         $this->assertEquals('iso-8859-1', $groups[1]);
     }
 
