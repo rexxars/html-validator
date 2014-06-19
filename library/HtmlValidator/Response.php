@@ -26,35 +26,35 @@ class Response {
 
     /**
      * HTTP response
-     * 
+     *
      * @var Guzzle\Http\Message\Response
      */
     private $httpResponse;
 
     /**
      * List of errors encountered
-     * 
+     *
      * @var array
      */
     private $errors = array();
 
     /**
      * List of warnings encountered
-     * 
+     *
      * @var array
      */
     private $warnings = array();
 
     /**
      * List of all messages encountered
-     * 
+     *
      * @var array
      */
     private $messages = array();
 
     /**
      * Constructs the response and parses it into usable data
-     * 
+     *
      * @param HttpResponse $response
      */
     public function __construct(HttpResponse $response) {
@@ -66,7 +66,7 @@ class Response {
 
     /**
      * Validate the HTTP response and throw exceptions on errors
-     * 
+     *
      * @throws ServerException
      */
     private function validateResponse() {
@@ -83,20 +83,20 @@ class Response {
             throw new ServerException($e->getMessage());
         }
     }
-    
+
     /**
      * Parse the received response into a usable format
-     * 
+     *
      * @return [type] [description]
      */
     private function parse() {
         $data = $this->httpResponse->json();
-        
+
         foreach ($data['messages'] as $message) {
             $msg = new Message($message);
             $this->messages[] = $msg;
-            
-            if ($message['type'] === 'error') {
+
+            if ($message['type'] === 'error' || $message['type'] === 'non-document-error') {
                 $this->errors[] = $msg;
             } else if ($message['type'] === 'warning') {
                 $this->warnings[] = $msg;
@@ -106,7 +106,7 @@ class Response {
 
     /**
      * Returns whether the markup the user tried to validate had any errors
-     * 
+     *
      * @return boolean
      */
     public function hasErrors() {
@@ -115,7 +115,7 @@ class Response {
 
     /**
      * Returns whether the markup the user tried to validate had any warnings
-     * 
+     *
      * @return boolean
      */
     public function hasWarnings() {
@@ -123,8 +123,17 @@ class Response {
     }
 
     /**
+     * Returns whether the markup the user tried to validate resulted in any messages
+     *
+     * @return boolean
+     */
+    public function hasMessages() {
+        return !empty($this->messages);
+    }
+
+    /**
      * Returns all encountered errors
-     * 
+     *
      * @return array
      */
     public function getErrors() {
@@ -133,7 +142,7 @@ class Response {
 
     /**
      * Returns all encountered warnings
-     * 
+     *
      * @return array
      */
     public function getWarnings() {
@@ -141,14 +150,23 @@ class Response {
     }
 
     /**
+     * Returns all encountered messages
+     *
+     * @return array
+     */
+    public function getMessages() {
+        return $this->messages;
+    }
+
+    /**
      * Returns a string-representation of all messages encountered
-     * 
+     *
      * @param  boolean $useHTML Whether to use HTML for formatting
      * @return string
      */
     public function format($useHTML = false) {
         $msgs = array();
-        
+
         foreach ($this->messages as $msg) {
             $msgs[] = $msg->format($useHTML);
         }
@@ -158,7 +176,7 @@ class Response {
 
     /**
      * Returns an HTML-representation of all messages encountered
-     * 
+     *
      * @return string
      */
     public function toHTML() {
@@ -167,7 +185,7 @@ class Response {
 
     /**
      * Returns a string containing all the messages encountered
-     * 
+     *
      * @return string
      */
     public function __toString() {
