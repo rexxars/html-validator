@@ -16,10 +16,10 @@ use Guzzle\Common\Exception\RuntimeException;
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
 class ResponseTest extends \PHPUnit_Framework_TestCase {
-    
+
     /**
      * Ensure construction of non-200 response throws ServerException
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @expectedException HtmlValidator\Exception\ServerException
@@ -36,7 +36,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure construction of response with a non-JSON response throws ServerException
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @expectedException HtmlValidator\Exception\ServerException
@@ -59,7 +59,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure construction of response with an invalid JSON body throws ServerException
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @expectedException HtmlValidator\Exception\ServerException
@@ -88,7 +88,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure population of errors
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @covers HtmlValidator\Response::parse
@@ -130,7 +130,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue($data));
 
         $response = new Response($responseMock);
-        
+
         $errors = $response->getErrors();
         $this->assertTrue($response->hasErrors());
         $this->assertSame(2, count($errors));
@@ -140,7 +140,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure population of warnings
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @covers HtmlValidator\Response::parse
@@ -182,7 +182,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue($data));
 
         $response = new Response($responseMock);
-        
+
         $warnings = $response->getWarnings();
         $this->assertTrue($response->hasWarnings());
         $this->assertSame(2, count($warnings));
@@ -191,8 +191,72 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
+     * Ensure population of messages
+     *
+     * @covers HtmlValidator\Response::__construct
+     * @covers HtmlValidator\Response::validateResponse
+     * @covers HtmlValidator\Response::parse
+     * @covers HtmlValidator\Response::getMessages
+     * @covers HtmlValidator\Response::hasMessages
+     */
+    public function testWillPopulateMessages() {
+        $data = array(
+            'messages' => array(
+                array(
+                    'type' => 'non-document-error',
+                    'firstLine' => 1,
+                    'lastLine' => 2,
+                    'firstColumn' => 3,
+                    'lastColumn' => 4,
+                    'hiliteStart' => 5,
+                    'hiliteLength' => 6,
+                    'message' => 'Foobar message',
+                    'extract' => '<strong>Foo</strong>',
+                ),
+                array(
+                    'type' => 'warning',
+                    'firstLine' => 9,
+                    'lastLine' => 8,
+                    'firstColumn' => 7,
+                    'lastColumn' => 6,
+                    'hiliteStart' => 5,
+                    'hiliteLength' => 4,
+                    'message' => 'Pimp Pelican warning',
+                    'extract' => '<em>Pelican</em>',
+                ),
+                array(
+                    'type' => 'error',
+                    'firstLine' => 9,
+                    'lastLine' => 8,
+                    'firstColumn' => 7,
+                    'lastColumn' => 6,
+                    'hiliteStart' => 5,
+                    'hiliteLength' => 4,
+                    'message' => 'Pimp Pelican error',
+                    'extract' => '<em>Pelican</em>',
+                ),
+            ),
+        );
+
+        $responseMock = $this->getGuzzleResponseMock(true);
+        $responseMock
+            ->expects($this->any())
+            ->method('json')
+            ->will($this->returnValue($data));
+
+        $response = new Response($responseMock);
+
+        $messages = $response->getMessages();
+        $this->assertTrue($response->hasMessages());
+        $this->assertSame(3, count($messages));
+        $this->assertSame($data['messages'][0]['message'], $messages[0]->getText());
+        $this->assertSame($data['messages'][1]['message'], $messages[1]->getText());
+        $this->assertSame($data['messages'][2]['message'], $messages[2]->getText());
+    }
+
+    /**
      * Test proper formatting of errors/warnings
-     * 
+     *
      * @covers HtmlValidator\Response::__construct
      * @covers HtmlValidator\Response::validateResponse
      * @covers HtmlValidator\Response::parse
@@ -235,7 +299,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue($data));
 
         $response = new Response($responseMock);
-        
+
         // Plain text
         $expected  = 'warning: Foobar' . PHP_EOL;
         $expected .= 'From line 1, column 3; to line 2, column 4' . PHP_EOL;
@@ -244,7 +308,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $expected .= 'error: Pimp Pelican' . PHP_EOL;
         $expected .= 'From line 9, column 7; to line 8, column 6' . PHP_EOL;
         $expected .= '<em>Pimp Pelican</em>';
-        
+
         $this->assertSame($expected, (string) $response);
 
         // HTML
@@ -255,13 +319,13 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $expected .= '<strong>error</strong>: Pimp Pelican<br>' . PHP_EOL;
         $expected .= 'From line 9, column 7; to line 8, column 6<br>' . PHP_EOL;
         $expected .= '&lt;em&gt;Pimp <span class="highlight">Pelican</span>&lt;/em&gt;';
-        
+
         $this->assertSame($expected, $response->toHTML());
     }
 
     /**
      * Get a guzzle response mock
-     * 
+     *
      * @param  boolean $expectSuccess Whether to prepare the mock with the default expectations
      * @return Guzzle\Http\Message\Response
      */
