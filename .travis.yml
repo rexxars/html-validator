@@ -12,8 +12,4 @@ branches:
 before_script:
     - composer -n --no-ansi install --dev --prefer-source
     - cp phpunit.xml.travis phpunit.xml
-matrix:
-  fast_finish: true
-  allow_failures:
-    - php: 5.6
-    - php: hhvm
+
