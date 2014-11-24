@@ -14,7 +14,7 @@ namespace HtmlValidator;
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
 class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
-    
+
     public function setUp() {
         if (!HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS) {
             $this->markTestSkipped('Integration tests disabled in configuration');

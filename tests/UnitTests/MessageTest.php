@@ -14,10 +14,10 @@ namespace HtmlValidator;
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
 class MessageTest extends \PHPUnit_Framework_TestCase {
-    
+
     /**
      * Test construction and population of a message instance
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::getType
      * @covers HtmlValidator\Message::getFirstLine
@@ -56,7 +56,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure first line gets populated if not present in data set
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::getFirstLine
      */
@@ -78,7 +78,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure proper plain-text formatting of message
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::__toString
      * @covers HtmlValidator\Message::format
@@ -118,7 +118,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure proper HTML formatting of message
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::toHTML
      * @covers HtmlValidator\Message::format
@@ -147,7 +147,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure ability to specify custom css class name
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::toHTML
      * @covers HtmlValidator\Message::format
@@ -178,7 +178,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure ability to specify custom highlighter
-     * 
+     *
      * @covers HtmlValidator\Message::__construct
      * @covers HtmlValidator\Message::toHTML
      * @covers HtmlValidator\Message::format

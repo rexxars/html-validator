@@ -18,7 +18,7 @@
 
   <php>
     <const name="HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS" value="false" />
-    <const name="HTML_VALIDATOR_URL" value="http://validator.nu" />
+    <const name="HTML_VALIDATOR_URL" value="https://validator.nu" />
   </php>
 
   <filter>

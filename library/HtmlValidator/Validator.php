@@ -81,32 +81,32 @@ class Validator {
      *
      * @var string
      */
-    const DEFAULT_VALIDATOR_URL = 'http://validator.nu';
+    const DEFAULT_VALIDATOR_URL = 'https://validator.nu';
 
     /**
      * Holds the HTTP client used to communicate with the API
-     * 
+     *
      * @var Guzzle\Http\Client
      */
     private $httpClient;
 
     /**
      * Parser to use for validating
-     * 
+     *
      * @var string
      */
     private $parser;
 
     /**
      * Default charset to report to the validator
-     * 
+     *
      * @var string
      */
     private $defaultCharset = self::CHARSET_UTF_8;
 
     /**
      * Node wrapper tool
-     * 
+     *
      * @var HtmlValidator\NodeWrapper
      */
     private $nodeWrapper;
@@ -125,7 +125,7 @@ class Validator {
 
     /**
      * Set the HTTP client to use for requests
-     * 
+     *
      * @param Guzzle\Http\ClientInterface $httpClient
      * @return HttpValidator\Validator
      */
@@ -137,7 +137,7 @@ class Validator {
 
     /**
      * Get the set parser type
-     * 
+     *
      * @return string
      */
     public function getParser() {
@@ -146,7 +146,7 @@ class Validator {
 
     /**
      * Set parser to use for the given markup
-     * 
+     *
      * @param string $parser Parser name (use Validator::PARSER_*)
      * @return Validator Returns current instance
      * @throws UnknownParserException If parser specified is not known
@@ -168,7 +168,7 @@ class Validator {
 
     /**
      * Get the charset to report to the validator
-     * 
+     *
      * @return string
      */
     public function getCharset() {
@@ -177,7 +177,7 @@ class Validator {
 
     /**
      * Set the charset to report to the validator
-     * 
+     *
      * @param string $charset Charset name (defaults to 'utf-8')
      * @return HtmlValidator\Validator
      */
@@ -189,7 +189,7 @@ class Validator {
 
     /**
      * Get the correct mime-type for the given parser
-     * 
+     *
      * @param  string $parser Parser name
      * @return string
      */
@@ -210,7 +210,7 @@ class Validator {
     /**
      * Get a string usable for the Content-Type header,
      * based on the given mime type and charset
-     * 
+     *
      * @param  string $mimeType Mime type to use
      * @param  string $charset  Character set to use
      * @return string
@@ -221,7 +221,7 @@ class Validator {
 
     /**
      * Validate a complete document (including DOCTYPE)
-     * 
+     *
      * @param  string $document HTML/XML-document, as string
      * @param  string $charset  Charset to report (defaults to utf-8)
      * @return HtmlValidator\Response
@@ -258,9 +258,9 @@ class Validator {
      * this can lead to unexpected behaviour:
      *   - Line numbers reported will be incorrect
      *   - Injected document might not be right for your use case
-     *   
+     *
      * NOTE: Use validateDocument() whenever possible.
-     * 
+     *
      * @param  string $nodes   HTML/XML-chunk, as string
      * @param  string $charset Charset to report (defaults to utf-8)
      * @return HtmlValidator\Response
@@ -273,7 +273,7 @@ class Validator {
 
     /**
      * Validate a complete document (including DOCTYPE)
-     * 
+     *
      * @param  string $document HTML/XML-document, as string
      * @param  string $charset  Charset to report (defaults to utf-8)
      * @return HtmlValidator\Response

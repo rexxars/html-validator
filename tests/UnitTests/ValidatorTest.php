@@ -16,10 +16,10 @@ use Guzzle\Common\Exception\RuntimeException;
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
 class ValidatorTest extends \PHPUnit_Framework_TestCase {
-    
+
     /**
      * Ensure the client can be instantiated without errors with no arguments passed
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      */
     public function testCanConstructClientWithDefaultArguments() {
@@ -29,7 +29,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Test that we can both set and get the parsers to be used when validating
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getParser
      * @covers HtmlValidator\Validator::setParser
@@ -49,7 +49,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Test that we can both set and get the charset to be used when validating
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getCharset
      * @covers HtmlValidator\Validator::setCharset
@@ -69,7 +69,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getCharset
      * @covers HtmlValidator\Validator::setCharset
@@ -102,7 +102,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
                 ))
             )
             ->will($this->returnValue($requestMock));
-        
+
         $client->setCharset(Validator::CHARSET_UTF_8);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
@@ -110,7 +110,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getCharset
      * @covers HtmlValidator\Validator::setCharset
@@ -143,7 +143,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
                 ))
             )
             ->will($this->returnValue($requestMock));
-        
+
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
@@ -151,7 +151,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure that the validate() method aliases validateDocument()
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getCharset
      * @covers HtmlValidator\Validator::setCharset
@@ -186,7 +186,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
                 ))
             )
             ->will($this->returnValue($requestMock));
-        
+
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validate($document);
@@ -194,7 +194,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
-     * 
+     *
      * @covers HtmlValidator\Validator::__construct
      * @covers HtmlValidator\Validator::getCharset
      * @covers HtmlValidator\Validator::setCharset
@@ -227,7 +227,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
                 ))
             )
             ->will($this->returnValue($requestMock));
-        
+
         $client->setParser(Validator::PARSER_XML);
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
@@ -236,7 +236,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * Get a mocked HTTP client
-     * 
+     *
      * @return Guzzle\Http\Client
      */
     private function getHttpClientMock() {
