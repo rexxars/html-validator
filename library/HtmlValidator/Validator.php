@@ -253,6 +253,43 @@ class Validator {
     }
 
     /**
+     * Validate a URL
+     *
+     * @param string $url the absolute URL to the document
+     * @param null $charset
+     * @return Response
+     * @throws ServerException
+     */
+    public function validateURL($url, $charset = null)
+    {
+        $url      = (string) $url;
+        $charset  = $charset ?: $this->defaultCharset;
+        $headers  = array(
+            'Content-Type'   => $this->getContentTypeString(
+                $this->getMimeTypeForParser($this->parser),
+                $charset
+            ),
+        );
+
+        $request = $this->httpClient->get('', $headers, array(
+            'query' => array(
+                'out'    => 'json',
+                'parser' => $this->parser,
+                'doc'    => $url,
+            ),
+        ));
+
+        try {
+            $response = new Response($request->send());
+        } catch (RequestException $e) {
+            throw new ServerException($e->getMessage());
+        }
+
+        return $response;
+    }
+
+
+    /**
      * Validates a chunk of HTML/XML. A surrounding document will be
      * created on the fly based on the formatter specified. Note that
      * this can lead to unexpected behaviour:

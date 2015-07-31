@@ -112,8 +112,16 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
     }
 
+
+    public function testValidateURL()
+    {
+        $validator = $this->getValidator();
+        $response  = $validator->validateURL('https://github.com/rexxars/html-validator');
+        
+        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+    }
+
     private function getValidator($parser = Validator::PARSER_HTML5) {
         return new Validator(HTML_VALIDATOR_URL, $parser);
     }
-
 }
