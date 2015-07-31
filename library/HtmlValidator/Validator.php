@@ -256,26 +256,16 @@ class Validator {
      * Validate a URL
      *
      * @param string $url the absolute URL to the document
-     * @param null $charset
      * @return Response
      * @throws ServerException
      */
-    public function validateURL($url, $charset = null)
+    public function validateURL($url)
     {
-        $url      = (string) $url;
-        $charset  = $charset ?: $this->defaultCharset;
-        $headers  = array(
-            'Content-Type'   => $this->getContentTypeString(
-                $this->getMimeTypeForParser($this->parser),
-                $charset
-            ),
-        );
-
-        $request = $this->httpClient->get('', $headers, array(
+        $request = $this->httpClient->get('', array(), array(
             'query' => array(
                 'out'    => 'json',
                 'parser' => $this->parser,
-                'doc'    => $url,
+                'doc'    => (string) $url,
             ),
         ));
 
