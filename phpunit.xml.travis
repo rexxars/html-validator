@@ -4,6 +4,7 @@
   <testsuites>
     <testsuite name="html-validator test suite">
       <directory>tests/UnitTests</directory>
+      <directory>tests/IntegrationTests</directory>
     </testsuite>
   </testsuites>
 

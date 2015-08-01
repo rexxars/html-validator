@@ -256,11 +256,10 @@ class Validator {
      * Validate a URL
      *
      * @param string $url the absolute URL to the document
-     * @return Response
+     * @return HtmlValidator\Response
      * @throws ServerException
      */
-    public function validateURL($url)
-    {
+    public function validateUrl($url) {
         $request = $this->httpClient->get('', array(), array(
             'query' => array(
                 'out'    => 'json',
@@ -277,7 +276,6 @@ class Validator {
 
         return $response;
     }
-
 
     /**
      * Validates a chunk of HTML/XML. A surrounding document will be

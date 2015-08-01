@@ -87,6 +87,19 @@ ed closed </span></li>
 
 ```
 
+# Validating a URL
+
+Since 1.1 you can validate URLs as well:
+
+``` php
+<?php
+$validator = new HtmlValidator\Validator();
+$validator->setParser(HtmlValidator\Validator::PARSER_HTML5);
+$result = $validator->validateUrl($url);
+
+echo $result;
+```
+
 # Using a self-hosted version of the API
 
 Check out [validator.nu](http://about.validator.nu/#src) for instructions on setting up the service.
