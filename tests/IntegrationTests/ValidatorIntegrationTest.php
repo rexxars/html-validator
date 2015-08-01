@@ -113,12 +113,20 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
     }
 
 
-    public function testValidateURL()
-    {
+    public function testValidateUrl() {
         $validator = $this->getValidator();
-        $response  = $validator->validateURL('https://github.com/rexxars/html-validator');
+        $response  = $validator->validateUrl('https://raw.githubusercontent.com/rexxars/html-validator/master/tests/fixtures/document-invalid-utf8-html5.html');
         
         $this->assertInstanceOf('\HtmlValidator\Response', $response);
+        $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
+
+        // Can't guarantee order of messages, but assume this one won't go away
+        $strayTagFound = false;
+        foreach ($response->getErrors() as $error) {
+            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') >= 0;
+        }
+
+        $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
     }
 
     private function getValidator($parser = Validator::PARSER_HTML5) {
