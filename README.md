@@ -30,7 +30,7 @@ To include `html-validator` in your project, add it to your `composer.json` file
 ```json
 {
     "require": {
-        "rexxars/html-validator": "~1.0"
+        "rexxars/html-validator": "^1.1.0"
     }
 }
 ```
@@ -89,7 +89,7 @@ ed closed </span></li>
 
 # Validating a URL
 
-Since 1.1 you can validate URLs as well:
+Since 1.1.0 you can validate URLs as well:
 
 ``` php
 <?php
