@@ -98,7 +98,7 @@ class Response {
 
             if ($message['type'] === 'error' || $message['type'] === 'non-document-error') {
                 $this->errors[] = $msg;
-            } else if ($message['type'] === 'info' && $message['subType'] === 'warning') {
+            } else if (isset($message['subType']) && $message['type'] === 'info' && $message['subType'] === 'warning') {
                 $this->warnings[] = $msg;
             }
         }
