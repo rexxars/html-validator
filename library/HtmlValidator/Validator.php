@@ -10,8 +10,8 @@
 
 namespace HtmlValidator;
 
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Exception\RequestException;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\RequestException;
 use HtmlValidator\Exception\ServerException;
 use HtmlValidator\Exception\UnknownParserException;
 
@@ -86,7 +86,7 @@ class Validator {
     /**
      * Holds the HTTP client used to communicate with the API
      *
-     * @var Guzzle\Http\Client
+     * @var GuzzleHttp\Client
      */
     private $httpClient;
 
@@ -115,8 +115,10 @@ class Validator {
      * Constructs a new validator instance
      */
     public function __construct($validatorUrl = self::DEFAULT_VALIDATOR_URL, $parser = self::PARSER_HTML5) {
-        $this->httpClient = new HttpClient($validatorUrl);
-        $this->httpClient->setDefaultOption('headers/User-Agent', 'rexxars/html-validator');
+        $this->httpClient = new HttpClient([
+            'base_uri' => $validatorUrl,
+            'headers' => ['User-Agent' => 'rexxars/html-validator']
+        ]);
 
         $this->nodeWrapper = new NodeWrapper();
 
@@ -126,7 +128,7 @@ class Validator {
     /**
      * Set the HTTP client to use for requests
      *
-     * @param Guzzle\Http\ClientInterface $httpClient
+     * @param GuzzleHttp\ClientInterface $httpClient
      * @return HttpValidator\Validator
      */
     public function setHttpClient($httpClient) {
@@ -229,22 +231,24 @@ class Validator {
     public function validateDocument($document, $charset = null) {
         $document = (string) $document;
         $charset  = $charset ?: $this->defaultCharset;
-        $headers  = array(
-            'Content-Type'   => $this->getContentTypeString(
+        $headers  = [
+            'Content-Type' => $this->getContentTypeString(
                 $this->getMimeTypeForParser($this->parser),
                 $charset
             ),
-        );
+        ];
 
-        $request = $this->httpClient->post('', $headers, $document, array(
-            'query' => array(
-                'out'    => 'json',
-                'parser' => $this->parser,
-            ),
-        ));
+        $response = $this->httpClient->request('POST', '', [
+            'body' => $document,
+            'headers' => $headers,
+            'query' => [
+                'out' => 'json',
+                'parser' => $this->parser
+            ],
+        ]);
 
         try {
-            $response = new Response($request->send());
+            $response = new Response($response);
         } catch (RequestException $e) {
             throw new ServerException($e->getMessage());
         }
@@ -260,21 +264,19 @@ class Validator {
      * @throws ServerException
      */
     public function validateUrl($url) {
-        $request = $this->httpClient->get('', array(), array(
-            'query' => array(
-                'out'    => 'json',
-                'parser' => $this->parser,
-                'doc'    => (string) $url,
-            ),
-        ));
-
         try {
-            $response = new Response($request->send());
+            $response = $this->httpClient->get('', [
+                'query' => [
+                    'out'    => 'json',
+                    'parser' => $this->parser,
+                    'doc'    => (string) $url,
+                ],
+            ]);
+
+            return new Response($response);
         } catch (RequestException $e) {
             throw new ServerException($e->getMessage());
         }
-
-        return $response;
     }
 
     /**
@@ -287,11 +289,15 @@ class Validator {
      * NOTE: Use validateDocument() whenever possible.
      *
      * @param  string $nodes   HTML/XML-chunk, as string
-     * @param  string $charset Charset to report (defaults to utf-8)
+     * @param  string $charset Charset to report (defaults to configured client charset)
      * @return HtmlValidator\Response
      */
     public function validateNodes($nodes, $charset = null) {
-        $wrapped = $this->nodeWrapper->wrap($this->parser, $nodes, $charset);
+        $wrapped = $this->nodeWrapper->wrap(
+            $this->parser,
+            $nodes,
+            $charset ?: $this->defaultCharset
+        );
 
         return $this->validateDocument($wrapped, $charset);
     }
@@ -300,11 +306,11 @@ class Validator {
      * Validate a complete document (including DOCTYPE)
      *
      * @param  string $document HTML/XML-document, as string
-     * @param  string $charset  Charset to report (defaults to utf-8)
+     * @param  string $charset  Charset to report (defaults to configured client charset)
      * @return HtmlValidator\Response
      */
     public function validate($document, $charset = null) {
-        return $this->validateDocument($document, $charset);
+        return $this->validateDocument($document, $charset ?: $this->defaultCharset);
     }
 
 }
