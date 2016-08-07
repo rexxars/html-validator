@@ -10,7 +10,7 @@
 
 namespace HtmlValidator;
 
-use Guzzle\Http\Message\Response as HttpResponse;
+use GuzzleHttp\Psr7\Response as HttpResponse;
 use HtmlValidator\Exception\ServerException;
 use RuntimeException;
 
@@ -27,7 +27,7 @@ class Response {
     /**
      * HTTP response
      *
-     * @var Guzzle\Http\Message\Response
+     * @var GuzzleHttp\Psr7\Response
      */
     private $httpResponse;
 
@@ -60,25 +60,30 @@ class Response {
     public function __construct(HttpResponse $response) {
         $this->httpResponse = $response;
 
-        $this->validateResponse();
+        $this->validateResponse($response);
         $this->parse();
     }
 
     /**
      * Validate the HTTP response and throw exceptions on errors
      *
+     * @param HttpResponse $response
      * @throws ServerException
      */
-    private function validateResponse() {
-        if ($this->httpResponse->getStatusCode() !== 200) {
-            $statusCode = $this->httpResponse->getStatusCode();
+    private function validateResponse($response) {
+        if ($response->getStatusCode() !== 200) {
+            $statusCode = $response->getStatusCode();
             throw new ServerException('Server responded with HTTP status ' . $statusCode, $statusCode);
-        } else if (strpos($this->httpResponse->getHeader('Content-Type'), 'application/json') === false) {
+        } else if (strpos($response->getHeader('Content-Type')[0], 'application/json') === false) {
             throw new ServerException('Server did not respond with the expected content-type (application/json)');
         }
 
         try {
-            $this->httpResponse->json();
+            $body = (string) $response->getBody();
+            $json = json_decode($body, true);
+            if (json_last_error()) {
+                throw new ServerException(json_last_error_msg());
+            }
         } catch (RuntimeException $e) {
             throw new ServerException($e->getMessage());
         }
@@ -86,11 +91,9 @@ class Response {
 
     /**
      * Parse the received response into a usable format
-     *
-     * @return [type] [description]
      */
     private function parse() {
-        $data = $this->httpResponse->json();
+        $data = json_decode($this->httpResponse->getBody(), true);
 
         foreach ($data['messages'] as $message) {
             $msg = new Message($message);

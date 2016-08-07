@@ -5,6 +5,9 @@ PHP client for the Validator.nu API. Can be configured to use a self-hosted vers
 
 [![Build Status](https://travis-ci.org/rexxars/html-validator.svg?branch=master)](https://travis-ci.org/rexxars/html-validator)
 
+Version >= 2.0.0 requires PHP >= 5.6.  
+Version <= 1.1.0 supports PHP <= 5.6, but won't be maintained anymore.
+
 # Usage
 
 ``` php

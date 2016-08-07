@@ -10,8 +10,6 @@
 
 namespace HtmlValidator;
 
-use Guzzle\Common\Exception\RuntimeException;
-
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
@@ -52,7 +50,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ->expects($this->any())
             ->method('getHeader')
             ->with($this->equalTo('Content-Type'))
-            ->will($this->returnValue('text/html'));
+            ->will($this->returnValue(['text/html']));
 
         $response = new Response($responseMock);
     }
@@ -75,13 +73,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ->expects($this->any())
             ->method('getHeader')
             ->with($this->equalTo('Content-Type'))
-            ->will($this->returnValue('application/json'));
+            ->will($this->returnValue(['application/json']));
 
-        $exception = new RuntimeException('Unable to parse response body into JSON: Some error');
         $responseMock
             ->expects($this->any())
-            ->method('json')
-            ->will($this->throwException($exception));
+            ->method('getBody')
+            ->will($this->returnValue('{"incompl'));
 
         $response = new Response($responseMock);
     }
@@ -96,9 +93,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * @covers HtmlValidator\Response::hasErrors
      */
     public function testWillPopulateErrors() {
-        $data = array(
-            'messages' => array(
-                array(
+        $data = [
+            'messages' => [
+                [
                     'type' => 'error',
                     'firstLine' => 1,
                     'lastLine' => 2,
@@ -108,8 +105,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
                     'hiliteLength' => 6,
                     'message' => 'Foobar',
                     'extract' => '<strong>Foo</strong>',
-                ),
-                array(
+                ],
+                [
                     'type' => 'error',
                     'firstLine' => 9,
                     'lastLine' => 8,
@@ -119,15 +116,15 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
                     'hiliteLength' => 4,
                     'message' => 'Pimp Pelican',
                     'extract' => '<em>Pelican</em>',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $responseMock = $this->getGuzzleResponseMock(true);
         $responseMock
             ->expects($this->any())
-            ->method('json')
-            ->will($this->returnValue($data));
+            ->method('getBody')
+            ->will($this->returnValue(json_encode($data)));
 
         $response = new Response($responseMock);
 
@@ -178,8 +175,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $responseMock = $this->getGuzzleResponseMock(true);
         $responseMock
             ->expects($this->any())
-            ->method('json')
-            ->will($this->returnValue($data));
+            ->method('getBody')
+            ->will($this->returnValue(json_encode($data)));
 
         $response = new Response($responseMock);
 
@@ -241,8 +238,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $responseMock = $this->getGuzzleResponseMock(true);
         $responseMock
             ->expects($this->any())
-            ->method('json')
-            ->will($this->returnValue($data));
+            ->method('getBody')
+            ->will($this->returnValue(json_encode($data)));
 
         $response = new Response($responseMock);
 
@@ -295,8 +292,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $responseMock = $this->getGuzzleResponseMock(true);
         $responseMock
             ->expects($this->any())
-            ->method('json')
-            ->will($this->returnValue($data));
+            ->method('getBody')
+            ->will($this->returnValue(json_encode($data)));
 
         $response = new Response($responseMock);
 
@@ -327,10 +324,10 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * Get a guzzle response mock
      *
      * @param  boolean $expectSuccess Whether to prepare the mock with the default expectations
-     * @return Guzzle\Http\Message\Response
+     * @return GuzzleHttp\Psr7\Response
      */
     private function getGuzzleResponseMock($expectSuccess = false) {
-        $mock = ($this->getMockBuilder('Guzzle\Http\Message\Response')
+        $mock = ($this->getMockBuilder('GuzzleHttp\Psr7\Response')
             ->disableOriginalConstructor()
             ->getMock());
 
@@ -344,7 +341,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
                 ->expects($this->any())
                 ->method('getHeader')
                 ->with($this->equalTo('Content-Type'))
-                ->will($this->returnValue('application/json'));
+                ->will($this->returnValue(['application/json']));
         }
 
         return $mock;
