@@ -256,21 +256,29 @@ class Validator {
         return $response;
     }
 
-    /**
-     * Validate a URL
-     *
-     * @param string $url the absolute URL to the document
-     * @return HtmlValidator\Response
-     * @throws ServerException
-     */
-    public function validateUrl($url) {
+  /**
+   * Validate a URL
+   *
+   * @param string $url the absolute URL to the document
+   * @param bool   $checkErrorPages true if you want to validate error pages
+   *
+   * @return HtmlValidator\Response
+   * @throws ServerException
+   */
+    public function validateUrl($url, $checkErrorPages = false) {
         try {
+            $query = [
+                'out'    => 'json',
+                'parser' => $this->parser,
+                'doc'    => (string) $url,
+            ];
+            
+            if ($checkErrorPages) {
+                $query['checkerrorpages'] = true;
+            }
+            
             $response = $this->httpClient->get('', [
-                'query' => [
-                    'out'    => 'json',
-                    'parser' => $this->parser,
-                    'doc'    => (string) $url,
-                ],
+                'query' => $query,
             ]);
 
             return new Response($response);
