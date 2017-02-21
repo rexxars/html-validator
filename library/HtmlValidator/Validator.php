@@ -16,7 +16,7 @@ use HtmlValidator\Exception\ServerException;
 use HtmlValidator\Exception\UnknownParserException;
 
 /**
- * HTML Validator (uses Validator.nu as backend)
+ * HTML Validator (uses checker.html5.org as backend)
  *
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  * @copyright Copyright (c) Espen Hovlandsdal
@@ -81,7 +81,7 @@ class Validator {
      *
      * @var string
      */
-    const DEFAULT_VALIDATOR_URL = 'https://validator.nu';
+    const DEFAULT_VALIDATOR_URL = 'https://checker.html5.org';
 
     /**
      * Holds the HTTP client used to communicate with the API

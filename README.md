@@ -1,7 +1,7 @@
 html-validator
 ==============
 
-PHP client for the Validator.nu API. Can be configured to use a self-hosted version of the API.
+PHP client for the [checker.html5.org](https://checker.html5.org) API. Can be configured to use a self-hosted version of the API.
 
 [![Build Status](https://travis-ci.org/rexxars/html-validator.svg?branch=master)](https://travis-ci.org/rexxars/html-validator)
 
