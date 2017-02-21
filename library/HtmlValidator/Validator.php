@@ -256,16 +256,18 @@ class Validator {
         return $response;
     }
 
-  /**
-   * Validate a URL
-   *
-   * @param string $url the absolute URL to the document
-   * @param bool   $checkErrorPages true if you want to validate error pages
-   *
-   * @return HtmlValidator\Response
-   * @throws ServerException
-   */
-    public function validateUrl($url, $checkErrorPages = false) {
+    /**
+     * Validate a URL
+     *
+     * @param string $url The absolute URL to the document
+     * @param array  $options Array of options:
+     *                        'checkErrorPages' - Set to true if you want to validate pages that
+     *                        return status codes which is not in the 2xx range
+     *
+     * @return HtmlValidator\Response
+     * @throws ServerException
+     */
+    public function validateUrl($url, $options = []) {
         try {
             $query = [
                 'out'    => 'json',
@@ -273,7 +275,7 @@ class Validator {
                 'doc'    => (string) $url,
             ];
             
-            if ($checkErrorPages) {
+            if (isset($options['checkErrorPages']) && $options['checkErrorPages'] === true) {
                 $query['checkerrorpages'] = true;
             }
             

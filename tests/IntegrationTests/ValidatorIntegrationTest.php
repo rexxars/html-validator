@@ -72,7 +72,7 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         // Can't guarantee order of messages, but assume this one won't go away
         $strayTagFound = false;
         foreach ($response->getErrors() as $error) {
-            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') >= 0;
+            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') !== false;
         }
 
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
@@ -106,7 +106,7 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         // Can't guarantee order of messages, but assume this one won't go away
         $strayTagFound = false;
         foreach ($response->getErrors() as $error) {
-            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') >= 0;
+            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') !== false;
         }
 
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
@@ -115,7 +115,7 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     public function testValidateUrl() {
         $validator = $this->getValidator();
-        $response  = $validator->validateUrl('https://raw.githubusercontent.com/rexxars/html-validator/master/tests/fixtures/document-invalid-utf8-html5.html');
+        $response  = $validator->validateUrl('https://cdn.rawgit.com/rexxars/html-validator/master/tests/fixtures/document-invalid-utf8-html5.html');
         
         $this->assertInstanceOf('\HtmlValidator\Response', $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
@@ -123,10 +123,33 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         // Can't guarantee order of messages, but assume this one won't go away
         $strayTagFound = false;
         foreach ($response->getErrors() as $error) {
-            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') >= 0;
+            $strayTagFound = $strayTagFound || strpos($error->getText(), 'Stray end tag “span”.') !== false;
         }
 
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
+    }
+
+    public function testValidateUrlWith404() {
+        $validator = $this->getValidator();
+        $response  = $validator->validateUrl('https://www.w3.org/404');
+
+        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+        $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
+
+        $error = $response->getErrors()[0];
+        $this->assertTrue(strpos($error->getText(), '404') !== false);
+    }
+
+    public function testValidateUrlWithAllowed404() {
+        $validator = $this->getValidator();
+        $response  = $validator->validateUrl('https://www.w3.org/404', ['checkErrorPages' => true]);
+
+        $fourOhFourFound = false;
+        foreach ($response->getErrors() as $error) {
+            $fourOhFourFound = $fourOhFourFound || strpos($error->getText(), '404') >= 0;
+        }
+
+        $this->assertTrue($fourOhFourFound, '404 was found in errors when it should have been allowed');
     }
 
     private function getValidator($parser = Validator::PARSER_HTML5) {

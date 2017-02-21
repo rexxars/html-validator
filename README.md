@@ -10,7 +10,7 @@ Version <= 1.1.0 supports PHP <= 5.6, but won't be maintained anymore.
 
 # Usage
 
-``` php
+```php
 <?php
 $document = file_get_contents('my-page.html');
 
@@ -59,7 +59,7 @@ Document to be validated (`validate-me.html`):
 ```
 
 Using the validator:
-``` php
+```php
 <?php
 $document = file_get_contents('validate-me.html');
 
@@ -94,11 +94,21 @@ ed closed </span></li>
 
 Since 1.1.0 you can validate URLs as well:
 
-``` php
+```php
 <?php
 $validator = new HtmlValidator\Validator();
 $validator->setParser(HtmlValidator\Validator::PARSER_HTML5);
 $result = $validator->validateUrl($url);
+
+echo $result;
+```
+
+Note that if you want to check pages that return status codes that are not in the 2xx-range (like a 404-page), you need to pass a `checkErrorPages` option:
+
+```php
+$validator = new HtmlValidator\Validator();
+$validator->setParser(HtmlValidator\Validator::PARSER_HTML5);
+$result = $validator->validateUrl($url, ['checkErrorPages' => true]);
 
 echo $result;
 ```
@@ -108,7 +118,7 @@ echo $result;
 Check out [validator.nu](http://about.validator.nu/#src) for instructions on setting up the service.
 Once set up, you can configure the validator to use a different host:
 
-``` php
+```php
 <?php
 $validator = new HtmlValidator\Validator('http://self-hosted-validator.domain.com');
 
