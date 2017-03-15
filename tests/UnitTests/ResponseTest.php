@@ -148,7 +148,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
         $data = array(
             'messages' => array(
                 array(
-                    'type' => 'warning',
+                    'type' => 'info',
+                    'subType' => 'warning',
                     'firstLine' => 1,
                     'lastLine' => 2,
                     'firstColumn' => 3,
@@ -159,7 +160,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
                     'extract' => '<strong>Foo</strong>',
                 ),
                 array(
-                    'type' => 'warning',
+                    'type' => 'info',
+                    'subType' => 'warning',
                     'firstLine' => 9,
                     'lastLine' => 8,
                     'firstColumn' => 7,
