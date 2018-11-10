@@ -18,7 +18,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the client can be instantiated without errors with no arguments passed
      *
-     * @covers HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::__construct
      */
     public function testCanConstructClientWithDefaultArguments() {
         $client = new Validator();
@@ -28,9 +28,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Test that we can both set and get the parsers to be used when validating
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getParser
-     * @covers HtmlValidator\Validator::setParser
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getParser
+     * @covers \HtmlValidator\Validator::setParser
      */
     public function testCanSetAndGetParsers() {
         $client = new Validator();
@@ -48,9 +48,9 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Test that we can both set and get the charset to be used when validating
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getCharset
-     * @covers HtmlValidator\Validator::setCharset
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getCharset
+     * @covers \HtmlValidator\Validator::setCharset
      */
     public function testCanSetAndGetCharset() {
         $client = new Validator();
@@ -68,11 +68,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getCharset
-     * @covers HtmlValidator\Validator::setCharset
-     * @covers HtmlValidator\Validator::getContentTypeString
-     * @covers HtmlValidator\Validator::getMimeTypeForParser
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getCharset
+     * @covers \HtmlValidator\Validator::setCharset
+     * @covers \HtmlValidator\Validator::getContentTypeString
+     * @covers \HtmlValidator\Validator::getMimeTypeForParser
      */
     public function testValidateDocumentSendsCorrectContentType() {
         $client = new Validator();
@@ -107,11 +107,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getCharset
-     * @covers HtmlValidator\Validator::setCharset
-     * @covers HtmlValidator\Validator::getContentTypeString
-     * @covers HtmlValidator\Validator::getMimeTypeForParser
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getCharset
+     * @covers \HtmlValidator\Validator::setCharset
+     * @covers \HtmlValidator\Validator::getContentTypeString
+     * @covers \HtmlValidator\Validator::getMimeTypeForParser
      */
     public function testValidateDocumentSendsCorrectContentTypeWithExplicitCharset() {
         $client = new Validator();
@@ -146,13 +146,13 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure that the validate() method aliases validateDocument()
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getCharset
-     * @covers HtmlValidator\Validator::setCharset
-     * @covers HtmlValidator\Validator::getContentTypeString
-     * @covers HtmlValidator\Validator::getMimeTypeForParser
-     * @covers HtmlValidator\Validator::validateDocument
-     * @covers HtmlValidator\Validator::validate
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getCharset
+     * @covers \HtmlValidator\Validator::setCharset
+     * @covers \HtmlValidator\Validator::getContentTypeString
+     * @covers \HtmlValidator\Validator::getMimeTypeForParser
+     * @covers \HtmlValidator\Validator::validateDocument
+     * @covers \HtmlValidator\Validator::validate
      */
     public function testValidateAliasesValidateDocument() {
         $client = new Validator();
@@ -187,11 +187,11 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure that the validator sends the correct content type and charset for the parser given
      *
-     * @covers HtmlValidator\Validator::__construct
-     * @covers HtmlValidator\Validator::getCharset
-     * @covers HtmlValidator\Validator::setCharset
-     * @covers HtmlValidator\Validator::getContentTypeString
-     * @covers HtmlValidator\Validator::getMimeTypeForParser
+     * @covers \HtmlValidator\Validator::__construct
+     * @covers \HtmlValidator\Validator::getCharset
+     * @covers \HtmlValidator\Validator::setCharset
+     * @covers \HtmlValidator\Validator::getContentTypeString
+     * @covers \HtmlValidator\Validator::getMimeTypeForParser
      */
     public function testValidateNodesSendsCorrectRequest() {
         $client = new Validator();
@@ -227,7 +227,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
     /**
      * Get a mocked HTTP client
      *
-     * @return GuzzleHttp\Client
+     * @return \GuzzleHttp\Client
      */
     private function getHttpClientMock() {
         $mock = ($this->getMockBuilder('GuzzleHttp\Client')
@@ -242,7 +242,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * Get a guzzle response mock
      *
      * @param  mixed $body Request body
-     * @return GuzzleHttp\Psr7\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     private function getGuzzleResponseMock($body) {
         $mock = ($this->getMockBuilder('GuzzleHttp\Psr7\Response')

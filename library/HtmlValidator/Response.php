@@ -27,28 +27,28 @@ class Response {
     /**
      * HTTP response
      *
-     * @var GuzzleHttp\Psr7\Response
+     * @var \GuzzleHttp\Psr7\Response
      */
     private $httpResponse;
 
     /**
      * List of errors encountered
      *
-     * @var array
+     * @var \HtmlValidator\Message[]
      */
     private $errors = array();
 
     /**
      * List of warnings encountered
      *
-     * @var array
+     * @var \HtmlValidator\Message[]
      */
     private $warnings = array();
 
     /**
      * List of all messages encountered
      *
-     * @var array
+     * @var \HtmlValidator\Message[]
      */
     private $messages = array();
 
@@ -137,7 +137,7 @@ class Response {
     /**
      * Returns all encountered errors
      *
-     * @return array
+     * @return \HtmlValidator\Message[]
      */
     public function getErrors() {
         return $this->errors;
@@ -146,7 +146,7 @@ class Response {
     /**
      * Returns all encountered warnings
      *
-     * @return array
+     * @return \HtmlValidator\Message[]
      */
     public function getWarnings() {
         return $this->warnings;
@@ -155,7 +155,7 @@ class Response {
     /**
      * Returns all encountered messages
      *
-     * @return array
+     * @return \HtmlValidator\Message[]
      */
     public function getMessages() {
         return $this->messages;
