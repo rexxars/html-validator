@@ -106,7 +106,7 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
 
     public function testValidateUrl() {
         $validator = $this->getValidator();
-        $response  = $validator->validateUrl('https://cdn.rawgit.com/rexxars/html-validator/master/tests/fixtures/document-invalid-utf8-html5.html');
+        $response  = $validator->validateUrl('https://raw.githubusercontent.com/rexxars/html-validator/master/tests/fixtures/document-invalid-utf8-html5.html');
         
         $this->assertInstanceOf('\HtmlValidator\Response', $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
