@@ -27,7 +27,7 @@ class NodeWrapper {
      * @param  string $parser  Parser name (HtmlValidator\Validator::PARSER_*)
      * @param  string $nodes   Nodes to wrap
      * @param  string $charset Charset to use
-     * @throws UnknownParserException If the given parser is not known
+     * @throws Exception\UnknownParserException If the given parser is not known
      * @return string
      */
     public function wrap($parser, $nodes, $charset = null) {
@@ -42,7 +42,7 @@ class NodeWrapper {
             case Validator::PARSER_HTML4TR:
                 return $this->wrapInHtml4Document($nodes, $charset, $parser);
             default:
-                throw new UnknownParserException('Unknown parser "' . $parser . '"');
+                throw new Exception\UnknownParserException('Unknown parser "' . $parser . '"');
         }
     }
 

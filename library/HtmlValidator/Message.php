@@ -221,7 +221,8 @@ class Message {
      *  (int)    $length - Length of substring to highlight
      *
      * @param callable $highlighter
-     * @return HtmlValidator\Message
+     * @throws Exception
+     * @return Message
      */
     public function setHighlighter($highlighter) {
         if (!is_callable($highlighter)) {
@@ -237,7 +238,7 @@ class Message {
      * Default: "highlight"
      *
      * @param  string $className Valid CSS class name
-     * @return HtmlValidator\Message
+     * @return Message
      */
     public function setHighlightClassName($className) {
         $this->highlightClassName = (string) $className;
