@@ -233,7 +233,6 @@ class Validator {
      * @param string $document HTML/XML-document, as string
      * @param string $charset Charset to report (defaults to utf-8)
      * @return Response
-     * @throws GuzzleException
      * @throws ServerException
      */
     public function validateDocument($document, $charset = null) {
@@ -246,18 +245,18 @@ class Validator {
             ),
         ];
 
-        $response = $this->httpClient->request('POST', '', [
-            'body' => $document,
-            'headers' => $headers,
-            'query' => [
-                'out' => 'json',
-                'parser' => $this->parser
-            ],
-        ]);
-
         try {
+            $response = $this->httpClient->request('POST', '', [
+                'body' => $document,
+                'headers' => $headers,
+                'query' => [
+                    'out' => 'json',
+                    'parser' => $this->parser
+                ],
+            ]);
+
             $response = new Response($response);
-        } catch (RequestException $e) {
+        } catch (GuzzleException $e) {
             throw new ServerException($e->getMessage());
         }
 
@@ -311,7 +310,6 @@ class Validator {
      * @return Response
      * @throws UnknownParserException
      * @throws ServerException
-     * @throws GuzzleException
      */
     public function validateNodes($nodes, $charset = null) {
         $wrapped = $this->nodeWrapper->wrap(
@@ -329,7 +327,6 @@ class Validator {
      * @param string $document HTML/XML-document, as string
      * @param string $charset Charset to report (defaults to configured client charset)
      * @return Response
-     * @throws GuzzleException
      * @throws ServerException
      */
     public function validate($document, $charset = null) {
