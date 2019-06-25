@@ -31,16 +31,6 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($response->hasWarnings(), 'Valid UTF-8 document should produce no errors');
     }
 
-    public function testCanValidateIsoHtml5Document() {
-        $validator = $this->getValidator();
-
-        $document  = file_get_contents(FIXTURES_DIR . '/document-valid-iso-html5.html');
-        $response  = $validator->validateDocument($document, Validator::CHARSET_WINDOWS_1252);
-
-        $this->assertFalse($response->hasErrors(), 'Valid ISO-8859-1 document should produce no errors');
-        $this->assertFalse($response->hasWarnings(), 'Valid ISO-8859-1 document should produce no warnings');
-    }
-
     public function testCanValidateXmlDocument() {
         $validator = $this->getValidator(Validator::PARSER_XML);
 
