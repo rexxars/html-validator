@@ -47,7 +47,8 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $document  = file_get_contents(FIXTURES_DIR . '/document-valid-html4.html');
         $response  = $validator->validateDocument($document);
 
-        $this->assertFalse($response->hasErrors(), 'Valid HTML document should produce no errors');
+        $this->assertCount(1, $response->getErrors());
+        $this->assertSame('Obsolete doctype. Expected “<!DOCTYPE html>”.', $response->getErrors()[0]->getText());
         $this->assertFalse($response->hasWarnings(), 'Valid HTML document should produce no warnings');
     }
 
