@@ -10,7 +10,7 @@
 
 namespace HtmlValidator;
 
-use GuzzleHttp\Psr7\Response as HttpResponse;
+use Psr\Http\Message\ResponseInterface as HttpResponse;
 use HtmlValidator\Exception\ServerException;
 use RuntimeException;
 
@@ -27,7 +27,7 @@ class Response {
     /**
      * HTTP response
      *
-     * @var GuzzleHttp\Psr7\Response
+     * @var HttpResponse
      */
     private $httpResponse;
 
