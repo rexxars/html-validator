@@ -206,6 +206,7 @@ class Validator {
                 return 'application/xml';
             case self::PARSER_XMLDTD:
                 return 'application/xml-dtd';
+            default:
             case self::PARSER_HTML:
             case self::PARSER_HTML5:
             case self::PARSER_HTML4:

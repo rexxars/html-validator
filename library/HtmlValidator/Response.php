@@ -81,7 +81,7 @@ class Response {
 
         try {
             $body = (string) $response->getBody();
-            $json = json_decode($body, true);
+            json_decode($body, true);
             if (json_last_error()) {
                 throw new ServerException(json_last_error_msg());
             }
