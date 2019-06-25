@@ -76,7 +76,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
      * @throws \HtmlValidator\Exception\UnknownParserException
      * @throws \HtmlValidator\Exception\ServerException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidateDocumentSendsCorrectContentType() {
         $client = new Validator();
@@ -118,7 +117,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
      * @throws \HtmlValidator\Exception\UnknownParserException
      * @throws \HtmlValidator\Exception\ServerException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidateDocumentSendsCorrectContentTypeWithExplicitCharset() {
         $client = new Validator();
@@ -162,7 +160,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::validate
      * @throws \HtmlValidator\Exception\UnknownParserException
      * @throws \HtmlValidator\Exception\ServerException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidateAliasesValidateDocument() {
         $client = new Validator();
@@ -204,7 +201,6 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
      * @throws \HtmlValidator\Exception\UnknownParserException
      * @throws \HtmlValidator\Exception\ServerException
-     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function testValidateNodesSendsCorrectRequest() {
         $client = new Validator();
