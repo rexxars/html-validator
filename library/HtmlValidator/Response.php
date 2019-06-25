@@ -56,6 +56,7 @@ class Response {
      * Constructs the response and parses it into usable data
      *
      * @param HttpResponse $response
+     * @throws ServerException
      */
     public function __construct(HttpResponse $response) {
         $this->httpResponse = $response;

@@ -11,6 +11,7 @@
 namespace HtmlValidator;
 
 use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use HtmlValidator\Exception\ServerException;
 use HtmlValidator\Exception\UnknownParserException;
@@ -86,7 +87,7 @@ class Validator {
     /**
      * Holds the HTTP client used to communicate with the API
      *
-     * @var GuzzleHttp\Client
+     * @var HttpClient
      */
     private $httpClient;
 
@@ -107,12 +108,16 @@ class Validator {
     /**
      * Node wrapper tool
      *
-     * @var HtmlValidator\NodeWrapper
+     * @var NodeWrapper
      */
     private $nodeWrapper;
 
     /**
      * Constructs a new validator instance
+     *
+     * @param string $validatorUrl
+     * @param string $parser
+     * @throws UnknownParserException
      */
     public function __construct($validatorUrl = self::DEFAULT_VALIDATOR_URL, $parser = self::PARSER_HTML5) {
         $this->httpClient = new HttpClient([
@@ -128,8 +133,8 @@ class Validator {
     /**
      * Set the HTTP client to use for requests
      *
-     * @param GuzzleHttp\ClientInterface $httpClient
-     * @return HttpValidator\Validator
+     * @param HttpClient $httpClient
+     * @return Validator
      */
     public function setHttpClient($httpClient) {
         $this->httpClient = $httpClient;
@@ -181,7 +186,7 @@ class Validator {
      * Set the charset to report to the validator
      *
      * @param string $charset Charset name (defaults to 'utf-8')
-     * @return HtmlValidator\Validator
+     * @return Validator
      */
     public function setCharset($charset) {
         $this->defaultCharset = $charset;
@@ -224,9 +229,11 @@ class Validator {
     /**
      * Validate a complete document (including DOCTYPE)
      *
-     * @param  string $document HTML/XML-document, as string
-     * @param  string $charset  Charset to report (defaults to utf-8)
-     * @return HtmlValidator\Response
+     * @param string $document HTML/XML-document, as string
+     * @param string $charset Charset to report (defaults to utf-8)
+     * @return Response
+     * @throws GuzzleException
+     * @throws ServerException
      */
     public function validateDocument($document, $charset = null) {
         $document = (string) $document;
@@ -264,7 +271,7 @@ class Validator {
      *                        'checkErrorPages' - Set to true if you want to validate pages that
      *                        return status codes which is not in the 2xx range
      *
-     * @return HtmlValidator\Response
+     * @return Response
      * @throws ServerException
      */
     public function validateUrl($url, $options = []) {
@@ -298,9 +305,12 @@ class Validator {
      *
      * NOTE: Use validateDocument() whenever possible.
      *
-     * @param  string $nodes   HTML/XML-chunk, as string
-     * @param  string $charset Charset to report (defaults to configured client charset)
-     * @return HtmlValidator\Response
+     * @param string $nodes HTML/XML-chunk, as string
+     * @param string $charset Charset to report (defaults to configured client charset)
+     * @return Response
+     * @throws UnknownParserException
+     * @throws ServerException
+     * @throws GuzzleException
      */
     public function validateNodes($nodes, $charset = null) {
         $wrapped = $this->nodeWrapper->wrap(
@@ -315,9 +325,11 @@ class Validator {
     /**
      * Validate a complete document (including DOCTYPE)
      *
-     * @param  string $document HTML/XML-document, as string
-     * @param  string $charset  Charset to report (defaults to configured client charset)
-     * @return HtmlValidator\Response
+     * @param string $document HTML/XML-document, as string
+     * @param string $charset Charset to report (defaults to configured client charset)
+     * @return Response
+     * @throws GuzzleException
+     * @throws ServerException
      */
     public function validate($document, $charset = null) {
         return $this->validateDocument($document, $charset ?: $this->defaultCharset);

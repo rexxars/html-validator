@@ -46,8 +46,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the XML wrapper can wrap a single XML node correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsSingleXmlNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -72,8 +73,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the XML wrapper can wrap multiple XML nodes correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsMultipleXmlNodesCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -101,8 +103,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the XML wrapper uses the passed charset
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsXmlNodesInGivenCharset() {
         $document = new DOMDocument();
@@ -124,8 +127,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML5 wrapper can wrap a single HTML5 node correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsSingleHtml5NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -156,8 +160,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML5 wrapper can wrap multiple HTML5 nodes correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsMultipleHtml5NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -191,8 +196,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML5 wrapper uses the passed charset
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsHtml5NodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(
@@ -217,8 +223,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4 wrapper can wrap a single HTML4 node correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsSingleHtml4NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -250,8 +257,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4 wrapper can wrap multiple HTML4 nodes correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsMultipleHtml4NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -286,8 +294,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4 wrapper uses the passed charset
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsHtml4NodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(
@@ -313,8 +322,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4-TR wrapper can wrap a single HTML4 node correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsSingleHtml4TrNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -346,8 +356,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4-TR wrapper can wrap multiple HTML4 nodes correctly
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsMultipleHtml4TrNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -382,8 +393,9 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure the HTML4-TR wrapper uses the passed charset
      *
-     * @covers HtmlValidator\NodeWrapper::wrap
-     * @covers HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @covers \HtmlValidator\NodeWrapper::wrap
+     * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
+     * @throws Exception\UnknownParserException
      */
     public function testWrapsHtml4TrNodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(

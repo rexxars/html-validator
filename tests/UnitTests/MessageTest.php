@@ -18,16 +18,16 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Test construction and population of a message instance
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::getType
-     * @covers HtmlValidator\Message::getFirstLine
-     * @covers HtmlValidator\Message::getLastLine
-     * @covers HtmlValidator\Message::getFirstColumn
-     * @covers HtmlValidator\Message::getLastColumn
-     * @covers HtmlValidator\Message::getHighlightStart
-     * @covers HtmlValidator\Message::getHighlightLength
-     * @covers HtmlValidator\Message::getText
-     * @covers HtmlValidator\Message::getExtract
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::getType
+     * @covers \HtmlValidator\Message::getFirstLine
+     * @covers \HtmlValidator\Message::getLastLine
+     * @covers \HtmlValidator\Message::getFirstColumn
+     * @covers \HtmlValidator\Message::getLastColumn
+     * @covers \HtmlValidator\Message::getHighlightStart
+     * @covers \HtmlValidator\Message::getHighlightLength
+     * @covers \HtmlValidator\Message::getText
+     * @covers \HtmlValidator\Message::getExtract
      */
     public function testCanPopulate() {
         $data = array(
@@ -57,8 +57,8 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure first line gets populated if not present in data set
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::getFirstLine
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::getFirstLine
      */
     public function testPopulatesFirstLineDataIfNotPresent() {
         $data = array(
@@ -79,9 +79,9 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure proper plain-text formatting of message
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::__toString
-     * @covers HtmlValidator\Message::format
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::__toString
+     * @covers \HtmlValidator\Message::format
      */
     public function testCorrectPlainTextFormatting() {
         $data = array(
@@ -119,10 +119,10 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure proper HTML formatting of message
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::toHTML
-     * @covers HtmlValidator\Message::format
-     * @covers HtmlValidator\Message::highlight
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::toHTML
+     * @covers \HtmlValidator\Message::format
+     * @covers \HtmlValidator\Message::highlight
      */
     public function testCorrectHtmlFormatting() {
         $data = array(
@@ -148,11 +148,11 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure ability to specify custom css class name
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::toHTML
-     * @covers HtmlValidator\Message::format
-     * @covers HtmlValidator\Message::highlight
-     * @covers HtmlValidator\Message::setHighlightClassName
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::toHTML
+     * @covers \HtmlValidator\Message::format
+     * @covers \HtmlValidator\Message::highlight
+     * @covers \HtmlValidator\Message::setHighlightClassName
      */
     public function testCanSetCustomCssClassNameForHighlighting() {
         $data = array(
@@ -179,10 +179,11 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure ability to specify custom highlighter
      *
-     * @covers HtmlValidator\Message::__construct
-     * @covers HtmlValidator\Message::toHTML
-     * @covers HtmlValidator\Message::format
-     * @covers HtmlValidator\Message::setHighlighter
+     * @covers \HtmlValidator\Message::__construct
+     * @covers \HtmlValidator\Message::toHTML
+     * @covers \HtmlValidator\Message::format
+     * @covers \HtmlValidator\Message::setHighlighter
+     * @throws Exception
      */
     public function testCanUseCustomHighlighter() {
         $data = array(

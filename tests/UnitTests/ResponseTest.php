@@ -18,9 +18,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure construction of non-200 response throws ServerException
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @expectedException HtmlValidator\Exception\ServerException
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @expectedException \HtmlValidator\Exception\ServerException
      */
     public function testWillThrowOnNon200Reponse() {
         $responseMock = $this->getGuzzleResponseMock();
@@ -35,9 +35,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure construction of response with a non-JSON response throws ServerException
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @expectedException HtmlValidator\Exception\ServerException
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @expectedException \HtmlValidator\Exception\ServerException
      */
     public function testWillThrowOnNonJsonResponse() {
         $responseMock = $this->getGuzzleResponseMock();
@@ -58,9 +58,9 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure construction of response with an invalid JSON body throws ServerException
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @expectedException HtmlValidator\Exception\ServerException
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @expectedException \HtmlValidator\Exception\ServerException
      */
     public function testWillThrowOnInvalidJsonResponse() {
         $responseMock = $this->getGuzzleResponseMock();
@@ -86,11 +86,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure population of errors
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @covers HtmlValidator\Response::parse
-     * @covers HtmlValidator\Response::getErrors
-     * @covers HtmlValidator\Response::hasErrors
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @covers \HtmlValidator\Response::parse
+     * @covers \HtmlValidator\Response::getErrors
+     * @covers \HtmlValidator\Response::hasErrors
+     * @throws \HtmlValidator\Exception\ServerException
      */
     public function testWillPopulateErrors() {
         $data = [
@@ -138,11 +139,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure population of warnings
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @covers HtmlValidator\Response::parse
-     * @covers HtmlValidator\Response::getWarnings
-     * @covers HtmlValidator\Response::hasWarnings
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @covers \HtmlValidator\Response::parse
+     * @covers \HtmlValidator\Response::getWarnings
+     * @covers \HtmlValidator\Response::hasWarnings
      */
     public function testWillPopulateWarnings() {
         $data = array(
@@ -190,11 +191,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Ensure population of messages
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @covers HtmlValidator\Response::parse
-     * @covers HtmlValidator\Response::getMessages
-     * @covers HtmlValidator\Response::hasMessages
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @covers \HtmlValidator\Response::parse
+     * @covers \HtmlValidator\Response::getMessages
+     * @covers \HtmlValidator\Response::hasMessages
      */
     public function testWillPopulateMessages() {
         $data = array(
@@ -254,12 +255,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
     /**
      * Test proper formatting of errors/warnings
      *
-     * @covers HtmlValidator\Response::__construct
-     * @covers HtmlValidator\Response::validateResponse
-     * @covers HtmlValidator\Response::parse
-     * @covers HtmlValidator\Response::format
-     * @covers HtmlValidator\Response::__toString
-     * @covers HtmlValidator\Response::toHTML
+     * @covers \HtmlValidator\Response::__construct
+     * @covers \HtmlValidator\Response::validateResponse
+     * @covers \HtmlValidator\Response::parse
+     * @covers \HtmlValidator\Response::format
+     * @covers \HtmlValidator\Response::__toString
+     * @covers \HtmlValidator\Response::toHTML
      */
     public function testWillFormat() {
         $data = array(
@@ -324,7 +325,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * Get a guzzle response mock
      *
      * @param  boolean $expectSuccess Whether to prepare the mock with the default expectations
-     * @return GuzzleHttp\Psr7\Response
+     * @return \GuzzleHttp\Psr7\Response
      */
     private function getGuzzleResponseMock($expectSuccess = false) {
         $mock = ($this->getMockBuilder('GuzzleHttp\Psr7\Response')
