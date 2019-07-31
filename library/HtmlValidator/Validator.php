@@ -82,7 +82,7 @@ class Validator {
      *
      * @var string
      */
-    const DEFAULT_VALIDATOR_URL = 'https://html5.validator.nu';
+    const DEFAULT_VALIDATOR_URL = 'https://validator.nu';
 
     /**
      * Holds the HTTP client used to communicate with the API
