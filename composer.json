@@ -8,6 +8,9 @@
             "email": "espen@hovlandsdal.com"
         }
     ],
+    "scripts": {
+      "test": "./vendor/bin/phpunit"
+    },
     "require": {
         "php": ">=5.6.0",
         "ext-json": "*",
