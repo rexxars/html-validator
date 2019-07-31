@@ -33,7 +33,7 @@ To include `html-validator` in your project, add it to your `composer.json` file
 ```json
 {
     "require": {
-        "rexxars/html-validator": "^2.1.0"
+        "rexxars/html-validator": "^2.2.0"
     }
 }
 ```
