@@ -10,7 +10,7 @@ branches:
     - develop
     - master
 before_script:
-    - composer -n --no-ansi install --dev --prefer-source
+    - composer -n --no-ansi install --prefer-source
     - cp phpunit.xml.travis phpunit.xml
 matrix:
   fast_finish: true

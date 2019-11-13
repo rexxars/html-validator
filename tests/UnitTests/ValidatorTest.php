@@ -10,10 +10,12 @@
 
 namespace HtmlValidator;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ValidatorTest extends \PHPUnit_Framework_TestCase {
+class ValidatorTest extends TestCase {
 
     /**
      * Ensure the client can be instantiated without errors with no arguments passed
@@ -22,7 +24,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testCanConstructClientWithDefaultArguments() {
         $client = new Validator();
-        $this->assertInstanceOf('HtmlValidator\Validator', $client);
+        $this->assertInstanceOf(Validator::class, $client);
     }
 
     /**
@@ -83,7 +85,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         $document = '<p>Dat document</p>';
 
         $responseMock = $this->getGuzzleResponseMock(['messages' => []]);
-        
+
         $httpClientMock = $this->getHttpClientMock();
         $httpClientMock
             ->expects($this->once())
@@ -142,7 +144,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
                 ])
             )
             ->will($this->returnValue($responseMock));
-        
+
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
