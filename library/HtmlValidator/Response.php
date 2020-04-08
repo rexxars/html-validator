@@ -97,6 +97,9 @@ class Response {
         $data = json_decode($this->httpResponse->getBody(), true);
 
         foreach ($data['messages'] as $message) {
+            if ($message['type'] === 'info' && $message['subType'] === 'warning') {
+                $message['type'] = 'warning';
+            }
             $msg = new Message($message);
             $this->messages[] = $msg;
 
