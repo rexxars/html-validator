@@ -10,10 +10,12 @@
 
 namespace HtmlValidator;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ResponseTest extends \PHPUnit_Framework_TestCase {
+class ResponseTest extends TestCase {
 
     /**
      * Ensure construction of non-200 response throws ServerException
@@ -131,7 +133,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
         $errors = $response->getErrors();
         $this->assertTrue($response->hasErrors());
-        $this->assertSame(2, count($errors));
+        $this->assertCount(2, $errors);
         $this->assertSame($data['messages'][0]['message'], $errors[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $errors[1]->getText());
     }
@@ -183,7 +185,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
         $warnings = $response->getWarnings();
         $this->assertTrue($response->hasWarnings());
-        $this->assertSame(2, count($warnings));
+        $this->assertCount(2, $warnings);
         $this->assertSame($data['messages'][0]['message'], $warnings[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $warnings[1]->getText());
     }
@@ -246,7 +248,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
         $messages = $response->getMessages();
         $this->assertTrue($response->hasMessages());
-        $this->assertSame(3, count($messages));
+        $this->assertCount(3, $messages);
         $this->assertSame($data['messages'][0]['message'], $messages[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $messages[1]->getText());
         $this->assertSame($data['messages'][2]['message'], $messages[2]->getText());

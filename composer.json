@@ -25,8 +25,8 @@
         "issues": "https://github.com/rexxars/html-validator/issues"
     },
     "autoload": {
-        "psr-0": {
-            "HtmlValidator": "library"
+        "psr-4": {
+            "HtmlValidator\\": "library/HtmlValidator"
         }
     }
 }

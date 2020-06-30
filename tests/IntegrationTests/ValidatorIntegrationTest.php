@@ -10,12 +10,14 @@
 
 namespace HtmlValidator;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ValidatorIntegrationTest extends TestCase {
 
-    public function setUp() {
+    protected function setUp() {
         if (!HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS) {
             $this->markTestSkipped('Integration tests disabled in configuration');
         }
@@ -107,8 +109,8 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
     public function testValidateUrl() {
         $validator = $this->getValidator();
         $response  = $validator->validateUrl('https://html-validator-fixtures.netlify.com/document-invalid-utf8-html5.html');
-        
-        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
 
         // Can't guarantee order of messages, but assume this one won't go away
@@ -124,11 +126,11 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $validator = $this->getValidator();
         $response  = $validator->validateUrl('https://www.w3.org/404');
 
-        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
 
         $error = $response->getErrors()[0];
-        $this->assertTrue(strpos($error->getText(), '404') !== false);
+        $this->assertContains('404', $error->getText());
     }
 
     public function testValidateUrlWithAllowed404() {
