@@ -8,12 +8,16 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
+namespace HtmlValidator\Tests\UnitTests;
+
+use HtmlValidator\Exception;
+use HtmlValidator\Message;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class MessageTest extends \PHPUnit_Framework_TestCase {
+class MessageTest extends TestCase {
 
     /**
      * Test construction and population of a message instance

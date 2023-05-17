@@ -8,28 +8,29 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
+namespace HtmlValidator\Tests\UnitTests;
+
+use HtmlValidator\Exception\ServerException;
+use HtmlValidator\Response;
+use GuzzleHttp\Psr7\Response as Psr7Response;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ResponseTest extends \PHPUnit_Framework_TestCase {
+class ResponseTest extends TestCase {
 
     /**
      * Ensure construction of non-200 response throws ServerException
      *
      * @covers \HtmlValidator\Response::__construct
      * @covers \HtmlValidator\Response::validateResponse
-     * @expectedException \HtmlValidator\Exception\ServerException
+     *
+     * @throws ServerException
      */
     public function testWillThrowOnNon200Reponse() {
-        $responseMock = $this->getGuzzleResponseMock();
-        $responseMock
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue(500));
-
-        $response = new Response($responseMock);
+        $this->expectException(ServerException::class);
+        new Response(new Psr7Response(500));
     }
 
     /**
@@ -37,22 +38,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\Response::__construct
      * @covers \HtmlValidator\Response::validateResponse
-     * @expectedException \HtmlValidator\Exception\ServerException
+     *
+     * @throws ServerException
      */
     public function testWillThrowOnNonJsonResponse() {
-        $responseMock = $this->getGuzzleResponseMock();
-        $responseMock
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue(200));
-
-        $responseMock
-            ->expects($this->any())
-            ->method('getHeader')
-            ->with($this->equalTo('Content-Type'))
-            ->will($this->returnValue(['text/html']));
-
-        $response = new Response($responseMock);
+        $this->expectException(ServerException::class);
+        new Response(new Psr7Response(200, ['Content-Type' => 'text/html']));
     }
 
     /**
@@ -60,27 +51,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\Response::__construct
      * @covers \HtmlValidator\Response::validateResponse
-     * @expectedException \HtmlValidator\Exception\ServerException
+     *
+     * @throws ServerException
      */
     public function testWillThrowOnInvalidJsonResponse() {
-        $responseMock = $this->getGuzzleResponseMock();
-        $responseMock
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue(200));
-
-        $responseMock
-            ->expects($this->any())
-            ->method('getHeader')
-            ->with($this->equalTo('Content-Type'))
-            ->will($this->returnValue(['application/json']));
-
-        $responseMock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue('{"incompl'));
-
-        $response = new Response($responseMock);
+        $this->expectException(ServerException::class);
+        new Response(new Psr7Response(200, ['Content-Type' => 'application/json'], '{"incompl'));
     }
 
     /**
@@ -91,7 +67,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Response::parse
      * @covers \HtmlValidator\Response::getErrors
      * @covers \HtmlValidator\Response::hasErrors
-     * @throws \HtmlValidator\Exception\ServerException
+     * @throws ServerException
      */
     public function testWillPopulateErrors() {
         $data = [
@@ -121,17 +97,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ],
         ];
 
-        $responseMock = $this->getGuzzleResponseMock(true);
-        $responseMock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode($data)));
-
-        $response = new Response($responseMock);
+        $response = new Response(new Psr7Response(200, ['Content-Type' => 'application/json'], json_encode($data)));
 
         $errors = $response->getErrors();
         $this->assertTrue($response->hasErrors());
-        $this->assertSame(2, count($errors));
+        $this->assertCount(2, $errors);
         $this->assertSame($data['messages'][0]['message'], $errors[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $errors[1]->getText());
     }
@@ -144,6 +114,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Response::parse
      * @covers \HtmlValidator\Response::getWarnings
      * @covers \HtmlValidator\Response::hasWarnings
+     * @throws ServerException
      */
     public function testWillPopulateWarnings() {
         $data = array(
@@ -173,17 +144,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ),
         );
 
-        $responseMock = $this->getGuzzleResponseMock(true);
-        $responseMock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode($data)));
-
-        $response = new Response($responseMock);
+        $response = new Response(new Psr7Response(200, ['Content-Type' => 'application/json'], json_encode($data)));
 
         $warnings = $response->getWarnings();
         $this->assertTrue($response->hasWarnings());
-        $this->assertSame(2, count($warnings));
+        $this->assertCount(2, $warnings);
         $this->assertSame($data['messages'][0]['message'], $warnings[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $warnings[1]->getText());
     }
@@ -196,6 +161,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Response::parse
      * @covers \HtmlValidator\Response::getMessages
      * @covers \HtmlValidator\Response::hasMessages
+     *
+     * @throws ServerException
      */
     public function testWillPopulateMessages() {
         $data = array(
@@ -236,17 +203,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ),
         );
 
-        $responseMock = $this->getGuzzleResponseMock(true);
-        $responseMock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode($data)));
-
-        $response = new Response($responseMock);
+        $response = new Response(new Psr7Response(200, ['Content-Type' => 'application/json'], json_encode($data)));
 
         $messages = $response->getMessages();
         $this->assertTrue($response->hasMessages());
-        $this->assertSame(3, count($messages));
+        $this->assertCount(3, $messages);
         $this->assertSame($data['messages'][0]['message'], $messages[0]->getText());
         $this->assertSame($data['messages'][1]['message'], $messages[1]->getText());
         $this->assertSame($data['messages'][2]['message'], $messages[2]->getText());
@@ -261,6 +222,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Response::format
      * @covers \HtmlValidator\Response::__toString
      * @covers \HtmlValidator\Response::toHTML
+     *
+     * @throws ServerException
      */
     public function testWillFormat() {
         $data = array(
@@ -290,13 +253,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
             ),
         );
 
-        $responseMock = $this->getGuzzleResponseMock(true);
-        $responseMock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode($data)));
-
-        $response = new Response($responseMock);
+        $response = new Response(new Psr7Response(200, ['Content-Type' => 'application/json'], json_encode($data)));
 
         // Plain text
         $expected  = 'warning: Foobar' . PHP_EOL;
@@ -320,32 +277,4 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertSame($expected, $response->toHTML());
     }
-
-    /**
-     * Get a guzzle response mock
-     *
-     * @param  boolean $expectSuccess Whether to prepare the mock with the default expectations
-     * @return \GuzzleHttp\Psr7\Response
-     */
-    private function getGuzzleResponseMock($expectSuccess = false) {
-        $mock = ($this->getMockBuilder('GuzzleHttp\Psr7\Response')
-            ->disableOriginalConstructor()
-            ->getMock());
-
-        if ($expectSuccess) {
-            $mock
-                ->expects($this->any())
-                ->method('getStatusCode')
-                ->will($this->returnValue(200));
-
-            $mock
-                ->expects($this->any())
-                ->method('getHeader')
-                ->with($this->equalTo('Content-Type'))
-                ->will($this->returnValue(['application/json']));
-        }
-
-        return $mock;
-    }
-
 }

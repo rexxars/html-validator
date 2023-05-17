@@ -8,19 +8,29 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
+namespace HtmlValidator\Tests\IntegrationTests;
+
+use HtmlValidator\Exception\ServerException;
+use HtmlValidator\Exception\UnknownParserException;
+use HtmlValidator\Validator;
+use HtmlValidator\Response;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ValidatorIntegrationTest extends TestCase {
 
-    public function setUp() {
+    public function set_up() {
         if (!HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS) {
             $this->markTestSkipped('Integration tests disabled in configuration');
         }
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testCanValidateUtf8Html5Document() {
         $validator = $this->getValidator();
 
@@ -31,6 +41,10 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($response->hasWarnings(), 'Valid UTF-8 document should produce no errors');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testCanValidateXmlDocument() {
         $validator = $this->getValidator(Validator::PARSER_XML);
 
@@ -41,6 +55,10 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($response->hasWarnings(), 'Valid XML document should produce no warnings');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testCanValidateHtml4Document() {
         $validator = $this->getValidator(Validator::PARSER_HTML4);
 
@@ -52,6 +70,10 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($response->hasWarnings(), 'Valid HTML document should produce no warnings');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testDetectsErrorsOnInvalidHtml5() {
         $validator = $this->getValidator();
 
@@ -69,6 +91,10 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testDetectsErrorsOnInvalidXml() {
         $validator = $this->getValidator(Validator::PARSER_XML);
 
@@ -86,6 +112,10 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($nameExpectedFound, '"name expected"-message was not found');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testDetectsErrorsOnInvalidHtml4() {
         $validator = $this->getValidator(Validator::PARSER_HTML4);
 
@@ -104,11 +134,15 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
     }
 
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testValidateUrl() {
         $validator = $this->getValidator();
         $response  = $validator->validateUrl('https://html-validator-fixtures.netlify.com/document-invalid-utf8-html5.html');
         
-        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
 
         // Can't guarantee order of messages, but assume this one won't go away
@@ -120,17 +154,25 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($strayTagFound, 'Stray <span>-tag was not discovered by validator found');
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testValidateUrlWith404() {
         $validator = $this->getValidator();
         $response  = $validator->validateUrl('https://www.w3.org/404');
 
-        $this->assertInstanceOf('\HtmlValidator\Response', $response);
+        $this->assertInstanceOf(Response::class, $response);
         $this->assertTrue($response->hasErrors(), 'Invalid HTML5 should produce errors');
 
         $error = $response->getErrors()[0];
-        $this->assertTrue(strpos($error->getText(), '404') !== false);
+        $this->assertStringContainsString('404', $error->getText());
     }
 
+    /**
+     * @throws ServerException
+     * @throws UnknownParserException
+     */
     public function testValidateUrlWithAllowed404() {
         $validator = $this->getValidator();
         $response  = $validator->validateUrl('https://www.w3.org/404', ['checkErrorPages' => true]);
@@ -143,6 +185,9 @@ class ValidatorIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($fourOhFourFound, '404 was found in errors when it should have been allowed');
     }
 
+    /**
+     * @throws UnknownParserException
+     */
     private function getValidator($parser = Validator::PARSER_HTML5) {
         return new Validator(HTML_VALIDATOR_URL, $parser);
     }

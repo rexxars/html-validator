@@ -8,12 +8,23 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
+namespace HtmlValidator\Tests\UnitTests;
+
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use HtmlValidator\Exception\ServerException;
+use HtmlValidator\Exception\UnknownParserException;
+use HtmlValidator\Validator;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Client;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class ValidatorTest extends \PHPUnit_Framework_TestCase {
+class ValidatorTest extends TestCase {
 
     /**
      * Ensure the client can be instantiated without errors with no arguments passed
@@ -22,7 +33,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      */
     public function testCanConstructClientWithDefaultArguments() {
         $client = new Validator();
-        $this->assertInstanceOf('HtmlValidator\Validator', $client);
+        $this->assertInstanceOf(Validator::class, $client);
     }
 
     /**
@@ -31,7 +42,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::__construct
      * @covers \HtmlValidator\Validator::getParser
      * @covers \HtmlValidator\Validator::setParser
-     * @throws \HtmlValidator\Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testCanSetAndGetParsers() {
         $client = new Validator();
@@ -74,37 +85,27 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::setCharset
      * @covers \HtmlValidator\Validator::getContentTypeString
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
-     * @throws \HtmlValidator\Exception\UnknownParserException
-     * @throws \HtmlValidator\Exception\ServerException
+     * @throws ServerException
      */
     public function testValidateDocumentSendsCorrectContentType() {
         $client = new Validator();
 
         $document = '<p>Dat document</p>';
 
-        $responseMock = $this->getGuzzleResponseMock(['messages' => []]);
-        
-        $httpClientMock = $this->getHttpClientMock();
-        $httpClientMock
-            ->expects($this->once())
-            ->method('request')
-            ->with(
-                $this->equalTo('POST'),
-                $this->equalTo(''),
-                $this->equalTo([
-                    'body' => $document,
-                    'headers' => ['Content-Type' => 'text/html; charset=utf-8'],
-                    'query' => [
-                        'out'    => 'json',
-                        'parser' => 'html5'
-                    ]
-                ])
-            )
-            ->will($this->returnValue($responseMock));
+        $container = [];
+        $httpClientMock = $this->getHttpClientMock(['messages' => []], $container);
 
         $client->setCharset(Validator::CHARSET_UTF_8);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
+
+        $this->assertCount(1, $container);
+        $request = $container[0]['request'];
+        $this->assertInstanceOf(Request::class, $request);
+        $this->assertSame('POST', $request->getMethod());
+        $this->assertSame(['text/html; charset=utf-8'], $request->getHeader('Content-Type'));
+        $this->assertSame($document, $request->getBody()->getContents());
+        $this->assertSame('out=json&parser=html5', $request->getUri()->getQuery());
     }
 
     /**
@@ -115,37 +116,27 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::setCharset
      * @covers \HtmlValidator\Validator::getContentTypeString
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
-     * @throws \HtmlValidator\Exception\UnknownParserException
-     * @throws \HtmlValidator\Exception\ServerException
+     * @throws ServerException
      */
     public function testValidateDocumentSendsCorrectContentTypeWithExplicitCharset() {
         $client = new Validator();
 
         $document = '<p>Dat document</p>';
 
-        $responseMock = $this->getGuzzleResponseMock(['messages' => []]);
-
-        $httpClientMock = $this->getHttpClientMock();
-        $httpClientMock
-            ->expects($this->once())
-            ->method('request')
-            ->with(
-                $this->equalTo('POST'),
-                $this->equalTo(''),
-                $this->equalTo([
-                    'body' => $document,
-                    'headers' => ['Content-Type' => 'text/html; charset=iso-8859-1'],
-                    'query' => [
-                        'out'    => 'json',
-                        'parser' => 'html5'
-                    ]
-                ])
-            )
-            ->will($this->returnValue($responseMock));
+        $container = [];
+        $httpClientMock = $this->getHttpClientMock(['messages' => []], $container);
         
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validateDocument($document);
+
+        $this->assertCount(1, $container);
+        $request = $container[0]['request'];
+        $this->assertInstanceOf(Request::class, $request);
+        $this->assertSame('POST', $request->getMethod());
+        $this->assertSame(['text/html; charset=iso-8859-1'], $request->getHeader('Content-Type'));
+        $this->assertSame($document, $request->getBody()->getContents());
+        $this->assertSame('out=json&parser=html5', $request->getUri()->getQuery());
     }
 
     /**
@@ -158,37 +149,27 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
      * @covers \HtmlValidator\Validator::validateDocument
      * @covers \HtmlValidator\Validator::validate
-     * @throws \HtmlValidator\Exception\UnknownParserException
-     * @throws \HtmlValidator\Exception\ServerException
+     * @throws ServerException
      */
     public function testValidateAliasesValidateDocument() {
         $client = new Validator();
 
         $document = '<p>Dat document</p>';
 
-        $responseMock = $this->getGuzzleResponseMock(array('messages' => array()));
-
-        $httpClientMock = $this->getHttpClientMock();
-        $httpClientMock
-            ->expects($this->once())
-            ->method('request')
-            ->with(
-                $this->equalTo('POST'),
-                $this->equalTo(''),
-                $this->equalTo([
-                    'body' => $document,
-                    'headers' => ['Content-Type' => 'text/html; charset=iso-8859-1'],
-                    'query' => [
-                        'out'    => 'json',
-                        'parser' => 'html5'
-                    ]
-                ])
-            )
-            ->will($this->returnValue($responseMock));
+        $container = [];
+        $httpClientMock = $this->getHttpClientMock(['messages' => []], $container);
 
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validate($document);
+
+        $this->assertCount(1, $container);
+        $request = $container[0]['request'];
+        $this->assertInstanceOf(Request::class, $request);
+        $this->assertSame('POST', $request->getMethod());
+        $this->assertSame(['text/html; charset=iso-8859-1'], $request->getHeader('Content-Type'));
+        $this->assertSame($document, $request->getBody()->getContents());
+        $this->assertSame('out=json&parser=html5', $request->getUri()->getQuery());
     }
 
     /**
@@ -199,81 +180,46 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * @covers \HtmlValidator\Validator::setCharset
      * @covers \HtmlValidator\Validator::getContentTypeString
      * @covers \HtmlValidator\Validator::getMimeTypeForParser
-     * @throws \HtmlValidator\Exception\UnknownParserException
-     * @throws \HtmlValidator\Exception\ServerException
+     * @throws UnknownParserException
+     * @throws ServerException
      */
     public function testValidateNodesSendsCorrectRequest() {
         $client = new Validator();
 
         $nodes = '<item>Those</item><item>Nodes</itme>';
 
-        $responseMock = $this->getGuzzleResponseMock(['messages' => []]);
-
-        $httpClientMock = $this->getHttpClientMock();
-        $httpClientMock
-            ->expects($this->once())
-            ->method('request')
-            ->with(
-                $this->equalTo('POST'),
-                $this->equalTo(''),
-                $this->equalTo([
-                    'body' => '<?xml version="1.0" encoding="ISO-8859-1"?>' . "\n<root>". $nodes . '</root>',
-                    'headers' => ['Content-Type' => 'application/xml; charset=iso-8859-1'],
-                    'query' => [
-                        'out'    => 'json',
-                        'parser' => 'xml'
-                    ]
-                ])
-            )
-            ->will($this->returnValue($responseMock));
+        $container = [];
+        $httpClientMock = $this->getHttpClientMock(['messages' => []], $container);
 
         $client->setParser(Validator::PARSER_XML);
         $client->setCharset(Validator::CHARSET_ISO_8859_1);
         $client->setHttpClient($httpClientMock);
         $client->validateNodes($nodes);
+
+        $this->assertCount(1, $container);
+        $request = $container[0]['request'];
+        $this->assertInstanceOf(Request::class, $request);
+        $this->assertSame('POST', $request->getMethod());
+        $this->assertSame(['application/xml; charset=iso-8859-1'], $request->getHeader('Content-Type'));
+        $this->assertSame('<?xml version="1.0" encoding="ISO-8859-1"?>' . "\n<root>". $nodes . '</root>', $request->getBody()->getContents());
+        $this->assertSame('out=json&parser=xml', $request->getUri()->getQuery());
     }
 
     /**
      * Get a mocked HTTP client
      *
-     * @return \GuzzleHttp\Client
+     * @return Client
      */
-    private function getHttpClientMock() {
-        $mock = ($this->getMockBuilder('GuzzleHttp\Client')
-            ->disableOriginalConstructor()
-            ->setMethods(['post', 'get', 'request'])
-            ->getMock());
+    private function getHttpClientMock($body, array &$container = null) {
+        $mock = new MockHandler([
+            new Response(200, ['Content-Type' => 'application/json'], json_encode($body)),
+        ]);
 
-        return $mock;
-    }
+        $handler = HandlerStack::create($mock);
 
-    /**
-     * Get a guzzle response mock
-     *
-     * @param  mixed $body Request body
-     * @return \GuzzleHttp\Psr7\Response
-     */
-    private function getGuzzleResponseMock($body) {
-        $mock = ($this->getMockBuilder('GuzzleHttp\Psr7\Response')
-            ->disableOriginalConstructor()
-            ->getMock());
+        $history = Middleware::history($container);
+        $handler->push($history);
 
-        $mock
-            ->expects($this->any())
-            ->method('getStatusCode')
-            ->will($this->returnValue(200));
-
-        $mock
-            ->expects($this->any())
-            ->method('getHeader')
-            ->with($this->equalTo('Content-Type'))
-            ->will($this->returnValue(['application/json']));
-
-        $mock
-            ->expects($this->any())
-            ->method('getBody')
-            ->will($this->returnValue(json_encode($body)));
-
-        return $mock;
+        return new Client(['handler' => $handler]);
     }
 }
