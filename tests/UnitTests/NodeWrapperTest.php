@@ -8,14 +8,18 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
+namespace HtmlValidator\Tests\UnitTests;
 
 use DOMDocument;
+use HtmlValidator\Exception\UnknownParserException;
+use HtmlValidator\NodeWrapper;
+use HtmlValidator\Validator;
+use Yoast\PHPUnitPolyfills\TestCases\TestCase;
 
 /**
  * @author Espen Hovlandsdal <espen@hovlandsdal.com>
  */
-class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
+class NodeWrapperTest extends TestCase {
     /**
      * NodeWrapper instance
      *
@@ -26,14 +30,14 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
     /**
      * Set up the wrapper
      */
-    public function setUp() {
+    public function set_up() {
         $this->wrapper = new NodeWrapper();
     }
 
     /**
      * Tear down the wrapper
      */
-    public function tearDown() {
+    public function tear_down() {
         $this->wrapper = null;
     }
 
@@ -48,7 +52,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsSingleXmlNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -75,7 +79,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsMultipleXmlNodesCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -105,7 +109,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInXmlDocument
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsXmlNodesInGivenCharset() {
         $document = new DOMDocument();
@@ -129,7 +133,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsSingleHtml5NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -143,7 +147,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/s', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -162,7 +166,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsMultipleHtml5NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -176,7 +180,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/si', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -198,7 +202,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml5Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsHtml5NodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(
@@ -209,7 +213,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
         // Expecting: <meta charset="iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]*charset=[\'"](.*?)[\'"]/i', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         $this->assertEquals('iso-8859-1', $groups[1]);
     }
@@ -225,7 +229,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsSingleHtml4NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -240,7 +244,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/s', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -259,7 +263,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsMultipleHtml4NodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -274,7 +278,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/si', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -296,7 +300,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsHtml4NodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(
@@ -307,7 +311,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
         // Expecting: <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]+charset=(.*?)[\'"]>/i', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         $this->assertEquals('iso-8859-1', $groups[1]);
     }
@@ -324,7 +328,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsSingleHtml4TrNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -339,7 +343,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/s', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -358,7 +362,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsMultipleHtml4TrNodeCorrectly() {
         $wrapped = $this->wrapper->wrap(
@@ -373,7 +377,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
         // Ensure body tag has been inserted
         // (I know, regex and such: DOMDocument fails on meta charset tag)
         $this->assertSame(1, preg_match('/(<body[^>]*>.*<\/body>)/si', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         // Load the body into a DOMDocument
         $document = new DOMDocument();
@@ -395,7 +399,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
      *
      * @covers \HtmlValidator\NodeWrapper::wrap
      * @covers \HtmlValidator\NodeWrapper::wrapInHtml4Document
-     * @throws Exception\UnknownParserException
+     * @throws UnknownParserException
      */
     public function testWrapsHtml4TrNodesInGivenCharset() {
         $wrapped = $this->wrapper->wrap(
@@ -406,7 +410,7 @@ class NodeWrapperTest extends \PHPUnit_Framework_TestCase {
 
         // Expecting: <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         $this->assertSame(1, preg_match('/<meta[^>]+charset=(.*?)[\'"]>/i', $wrapped, $groups));
-        $this->assertSame(2, count($groups));
+        $this->assertCount(2, $groups);
 
         $this->assertEquals('iso-8859-1', $groups[1]);
     }

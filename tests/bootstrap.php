@@ -8,13 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace HtmlValidator;
-
-/**
- * @author Espen Hovlandsdal <espen@hovlandsdal.com>
- */
-
 define('FIXTURES_DIR', __DIR__ . '/fixtures');
 
-$autoloader = require __DIR__ . '/../vendor/autoload.php';
-$autoloader->add(__NAMESPACE__, __DIR__);
+require dirname(__DIR__).'/vendor/autoload.php';
+
+defined('HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS') || define('HTML_VALIDATOR_ENABLE_INTEGRATION_TESTS', false);
+defined('HTML_VALIDATOR_URL') || define('HTML_VALIDATOR_URL', '');
